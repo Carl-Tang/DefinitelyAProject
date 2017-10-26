@@ -290,9 +290,11 @@ public class QuestionModel {
 
 	// getListOfQuestions in a specific set
 	public List<List<String>> getQuestionsFromSpecificSet(String setName) {
+    
 		if (setName == Main.DEFAULT_QUESTION_SET_NAME) {
 			return _preloadSortedQuestionSet;
 		}
+    
 		return _sets.get(setName).getQuestionsInSet();
 	}
 
