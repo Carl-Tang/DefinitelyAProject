@@ -9,6 +9,11 @@ import java.util.Map;
 
 import enums.Mode;
 
+/**
+ * This class is the model that organizing users and their scores, ranks,
+ * histories along with the local files storing these information.
+ *
+ */
 public class UserModel {
 
 	private static UserModel _modelInstance;
@@ -19,7 +24,7 @@ public class UserModel {
 	private static Map<String, User> _users;
 
 	/**
-	 * Constructor
+	 * Private constructor
 	 */
 	private UserModel() {
 		_users = new HashMap<String, User>();
@@ -124,24 +129,13 @@ public class UserModel {
 	 * @return the rank of the user in the given mode
 	 */
 	private int calculateRank(Mode gameMode, String userName) {
-		int rank;
-		Integer personalBest, usrBest;
 		switch (gameMode) {
 		case NORMALMATH:
-			personalBest = _users.get(userName).getPersonalBest(Mode.NORMALMATH);
-			rank = 1;
-			for (User usr : _users.values()) {
-				usrBest = usr.getPersonalBest(Mode.NORMALMATH);
-				if (usrBest != null && usrBest > personalBest) {
-					rank++;
-				}
-			}
-			return rank;
 		case ENDLESSMATH:
-			personalBest = _users.get(userName).getPersonalBest(Mode.ENDLESSMATH);
-			rank = 1;
+			Integer personalBest = _users.get(userName).getPersonalBest(gameMode);
+			int rank = 1;
 			for (User usr : _users.values()) {
-				usrBest = usr.getPersonalBest(Mode.ENDLESSMATH);
+				Integer usrBest = usr.getPersonalBest(gameMode);
 				if (usrBest != null && usrBest > personalBest) {
 					rank++;
 				}
@@ -177,14 +171,10 @@ public class UserModel {
 	 * @return the highest score of the user in the given game mode
 	 */
 	private int calculatePersonalBest(Mode gameMode, String userName) {
-		int personalBest;
 		switch (gameMode) {
 		case NORMALMATH:
-			personalBest = _users.get(userName).getPersonalBest(Mode.NORMALMATH);
-			return personalBest;
 		case ENDLESSMATH:
-			personalBest = _users.get(userName).getPersonalBest(Mode.ENDLESSMATH);
-			return personalBest;
+			return _users.get(userName).getPersonalBest(gameMode);
 		default:
 			throw new RuntimeException("Mode can only be NORMALMATH or ENDLESSMATH");
 		}

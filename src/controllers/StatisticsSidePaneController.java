@@ -19,13 +19,13 @@ public class StatisticsSidePaneController {
 	 * @param number
 	 * @param isCorrect
 	 */
-	public void appendResult(String number, boolean isCorrect) {
+	protected void appendResult(String number, boolean isCorrect) {
 		Label result = new Label();
 		// calculate the question number of the new result to append
 		int questionNumber = _resultListView.getItems().size() + 1;
 		if (isCorrect) {
 			result.setText("Question " + questionNumber + ":   \"" + number + "\", Correct");
-			result.setTextFill(Color.LIGHTGREEN);
+			result.setTextFill(Color.GREEN);
 		} else {
 			result.setText("Question " + questionNumber + ":   \"" + number + "\", Wrong");
 			result.setTextFill(Color.RED);
@@ -37,14 +37,14 @@ public class StatisticsSidePaneController {
 	 * 
 	 * @return number of questions been recorded in the statistics bar
 	 */
-	public int getNumOfRecords() {
+	protected int getNumOfRecords() {
 		return _resultListView.getItems().size();
 	}
 
 	/**
 	 * Clear all records in the statistics bar.
 	 */
-	public void reset() {
+	protected void reset() {
 		_resultListView.getItems().clear();
 	}
 

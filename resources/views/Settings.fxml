@@ -7,107 +7,278 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" >
-   <columnConstraints>
-      <ColumnConstraints />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints />
-   </rowConstraints>
+<StackPane fx:id="background" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox prefHeight="600.0" prefWidth="1000.0">
+      <VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="1000.0">
          <children>
-            <VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="1000.0">
+            <HBox alignment="CENTER" minHeight="-Infinity" prefHeight="50.0" style="-fx-background-color: #1976d2;">
                <children>
-                  <HBox alignment="CENTER" style="-fx-background-color: #1976d2;">
-                     <children>
-                        <Label text="Choose a question set and generate your own question list!" textFill="#fffafa">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Label>
-                     </children>
-                     <effect>
-                        <DropShadow />
-                     </effect>
-                     <padding>
-                        <Insets bottom="5.0" top="45.0" />
-                     </padding>
-                  </HBox>
-                  <Region prefHeight="25.0" prefWidth="1000.0" />
-                  <Region prefHeight="50.0" prefWidth="1000.0" style="-fx-background-color: white;">
-                     <effect>
-                        <DropShadow blurType="GAUSSIAN" color="#0000004d" height="20.0" offsetY="-5.0" radius="9.5" width="20.0" />
-                     </effect>
-                  </Region>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: white;">
-                     <children>
-                        <JFXComboBox fx:id="quesitonSetComboBox" prefWidth="300.0" />
-                        <Region prefHeight="100.0" prefWidth="50.0" />
-                        <JFXButton fx:id="editQuestionSetBtn" buttonType="RAISED" onAction="#editAQuestionSet" style="-fx-background-color: white;" text="edit">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor></JFXButton>
-                        <Region prefHeight="100.0" prefWidth="50.0" />
-                        <JFXButton fx:id="addNewSetBtn" buttonType="RAISED" onAction="#addNewSet" style="-fx-background-color: white;" text="Add">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor></JFXButton>
-                        <Region prefHeight="100.0" prefWidth="50.0" />
-                        <JFXButton fx:id="deleteSetBtn" buttonType="RAISED" onAction="#deleteSet" style="-fx-background-color: white;" text="Delete">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor></JFXButton>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: white;">
-                     <children>
-                        <Label text="You can randomly generate a question list with " />
-                        <JFXTextField fx:id="numOfQuestionsTextFieldForRandom" prefWidth="80.0" />
-                        <Label text=" questions " />
-                        <JFXButton fx:id="pickARandomListBtn" buttonType="RAISED" onAction="#pickRandomList" style="-fx-background-color: white;" text="Pick!">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor></JFXButton>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: white;">
-                     <children>
-                        <Label text="Or you can pick the questions your self: " />
-                        <JFXButton fx:id="pickYourselfBtn" buttonType="RAISED" onAction="#pickCustomizedList" style="-fx-background-color: white;" text="Pick  yourself!">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor></JFXButton>
-                     </children>
-                  </HBox>
-                  <Region prefHeight="50.0" prefWidth="1000.0" style="-fx-background-color: white;">
-                     <effect>
-                        <DropShadow color="#0000004d" offsetY="5.0" />
-                     </effect>
-                  </Region>
-                  <Region prefHeight="25.0" prefWidth="1000.0" />
-                  <JFXButton fx:id="confirmBtn" buttonType="RAISED" onAction="#confirmSetting" prefWidth="1000.0" style="-fx-background-color: white;" text="Confirm">
+                  <JFXButton fx:id="homeBtn" minHeight="-Infinity" onAction="#backToHome" prefHeight="50.0" prefWidth="150.0" text="Home" textFill="WHITE">
                      <font>
-                        <Font size="24.0" />
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Label layoutX="196.0" layoutY="20.0" text="Settings" textFill="#fffafa">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Region prefWidth="150.0" HBox.hgrow="NEVER" />
+               </children>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </HBox>
+            <VBox>
+               <children>
+                  <Label text="Changes are automatically saved" textFill="#616161">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="15.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label layoutX="10.0" layoutY="10.0" text="Choose a question set and generate your own question list" textFill="#757575">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <VBox style="-fx-background-color: white;">
+                     <children>
+                        <HBox alignment="CENTER">
+                           <children>
+                              <Label text="Question sets" textFill="#424242">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="40.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Region HBox.hgrow="ALWAYS" />
+                              <JFXComboBox fx:id="quesitonSetComboBox" prefWidth="230.0" unFocusColor="#e0e0e0">
+                                 <HBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </HBox.margin>
+                              </JFXComboBox>
+                              <JFXButton fx:id="editQuestionSetBtn" buttonType="RAISED" onAction="#editAQuestionSet" style="-fx-background-color: white;" text="Edit">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </HBox.margin>
+                              </JFXButton>
+                              <JFXButton fx:id="addNewSetBtn" buttonType="RAISED" onAction="#addNewSet" style="-fx-background-color: white;" text="Add">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </HBox.margin>
+                              </JFXButton>
+                              <JFXButton fx:id="deleteSetBtn" buttonType="RAISED" onAction="#deleteSet" style="-fx-background-color: white;" text="Delete">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="15.0" top="5.0" />
+                                 </HBox.margin>
+                              </JFXButton>
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" top="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" style="-fx-border-color: #eeeeee; -fx-border-width: 1 0 1 0;">
+                           <children>
+                              <Label text="Question list" textFill="#424242">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="40.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Label fx:id="questionListSizeWarningMessage" layoutX="498.0" layoutY="35.0" text="Size must be greater than 0." textFill="RED" visible="false">
+                                 <HBox.margin>
+                                    <Insets right="20.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Label layoutX="51.0" layoutY="34.0" text="Size:" textFill="#424242">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <JFXTextField fx:id="numOfQuestionsTextFieldForRandom" alignment="CENTER" prefWidth="50.0" unFocusColor="#e0e0e0">
+                                 <HBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXButton fx:id="pickARandomListBtn" buttonType="RAISED" onAction="#pickRandomList" style="-fx-background-color: white;" text="Auto Generate">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="15.0" top="5.0" />
+                                 </HBox.margin>
+                              </JFXButton>
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" top="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox fx:id="customizeQListBox" alignment="CENTER">
+                           <children>
+                              <Label text="Customize question list">
+                                 <HBox.margin>
+                                    <Insets left="40.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Region HBox.hgrow="ALWAYS" />
+                              <JFXButton fx:id="pickYourselfBtn" buttonType="RAISED" onAction="#pickCustomizedList" style="-fx-background-color: white;" text="Pick  yourself!">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <HBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="15.0" top="10.0" />
+                                 </HBox.margin>
+                              </JFXButton>
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" top="10.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                     <effect>
+                        <DropShadow blurType="GAUSSIAN" color="#0000004d" height="20.0" radius="9.5" width="20.0" />
+                     </effect>
+                  </VBox>
+                  <Label layoutX="15.0" layoutY="51.0" text="Recording time and maximum retry number" textFill="#757575">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="30.0" />
+                     </VBox.margin>
+                  </Label>
+                  <VBox style="-fx-background-color: white;">
+                     <effect>
+                        <DropShadow blurType="GAUSSIAN" color="#0000004d" height="20.0" radius="9.5" width="20.0" />
+                     </effect>
+                     <children>
+                        <HBox alignment="CENTER" style="-fx-border-color: #eeeeee; -fx-border-width: 0 0 1 0;">
+                           <padding>
+                              <Insets bottom="10.0" top="10.0" />
+                           </padding>
+                           <children>
+                              <Label text="Recording time">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets bottom="10.0" left="40.0" right="10.0" top="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Region HBox.hgrow="ALWAYS" />
+                              <JFXComboBox fx:id="recordingTimeComboBox" prefWidth="70.0" unFocusColor="#e0e0e0">
+                                 <HBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="5.0" top="10.0" />
+                                 </HBox.margin>
+                              </JFXComboBox>
+                              <Label layoutX="50.0" layoutY="33.0" text="seconds">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets right="15.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <padding>
+                              <Insets bottom="10.0" top="10.0" />
+                           </padding>
+                           <children>
+                              <Label text="Maximum number of tries">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets bottom="10.0" left="40.0" right="10.0" top="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Label fx:id="maxTrailNumSizeWarningMessage" text="Number must be greater than 0." textFill="RED" visible="false">
+                                 <HBox.margin>
+                                    <Insets right="20.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <JFXTextField fx:id="maxTrailNumTextField" alignment="CENTER" prefWidth="60.0" unFocusColor="#e0e0e0">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                              </JFXTextField>
+                              <Label layoutX="272.0" layoutY="30.0" text="times">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets right="15.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="150.0" right="150.0" top="40.0" />
+               </VBox.margin>
+            </VBox>
+            <Region VBox.vgrow="ALWAYS" />
+            <HBox minHeight="-Infinity" prefHeight="50.0">
+               <children>
+                  <JFXButton fx:id="helpBtn" onAction="#showHelp" prefHeight="50.0" prefWidth="80.0" text="Help" underline="true">
+                     <font>
+                        <Font size="14.0" />
                      </font>
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </JFXButton>
                </children>
-            </VBox>
+            </HBox>
          </children>
-      </HBox>
+      </VBox>
    </children>
-</GridPane>
+</StackPane>

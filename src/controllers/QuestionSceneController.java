@@ -1,16 +1,13 @@
 package controllers;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Properties;
-import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -21,7 +18,6 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 
 import javafx.scene.control.Label;
-import models.QuestionModel;
 
 public class QuestionSceneController {
 	@FXML
@@ -31,13 +27,21 @@ public class QuestionSceneController {
 	@FXML
 	private Button _recordBtn;
 	private FoundationBoardController _parentController;
+	/**
+	 * Answer for current question showing
+	 */
 	private String _answer;
 
-	public QuestionSceneController(FoundationBoardController foundationBoardController) {
+	protected QuestionSceneController(FoundationBoardController foundationBoardController) {
 		_parentController = foundationBoardController;
 	}
 
-	// Event Listener on Button[#_recordBtn].onAction
+	/**
+	 * Event Listener on Button[#_recordBtn].onAction. Start recording user's
+	 * speech.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	public void recordBtnClicked(ActionEvent event) {
 
@@ -91,7 +95,7 @@ public class QuestionSceneController {
 	 * 
 	 * @param question
 	 */
-	public void setQuestion(String question, String answer) {
+	protected void setQuestion(String question, String answer) {
 		_question.setText(question);
 		_answer = answer;
 		_progressBar.setProgress(0);

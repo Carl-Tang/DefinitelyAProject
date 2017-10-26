@@ -27,7 +27,7 @@ public class PractiseSummarySceneController {
 	 * 
 	 * @param correctRate
 	 */
-	public void setCorrectRate(double correctRate) {
+	protected void setCorrectRate(double correctRate) {
 		double percentCorrect = correctRate * 100;
 
 		_percentageLabel.setText("" + (int) percentCorrect);
@@ -46,7 +46,8 @@ public class PractiseSummarySceneController {
 	 *            which is a map with keys of the questions the user did wrong, and
 	 *            values of the number of times the user got the question wrong
 	 */
-	public void setWrongAnswerChartData(Map<String, Integer> wrongQuestions) {
+	@SuppressWarnings("unchecked")
+	protected void setWrongAnswerChartData(Map<String, Integer> wrongQuestions) {
 		// create a new series
 		XYChart.Series<String, Number> series = new Series<String, Number>();
 		// added values to the series

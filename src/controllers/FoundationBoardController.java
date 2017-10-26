@@ -11,8 +11,6 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDialog;
-import com.jfoenix.controls.JFXDialog.DialogTransition;
 
 import application.BashProcess;
 import application.Main;
@@ -20,7 +18,6 @@ import application.SpeechRecognizer;
 import enums.Function;
 import enums.Mode;
 
-import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXDrawer;
 
 import javafx.concurrent.Task;
@@ -33,7 +30,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
 import models.QuestionModel;
 import models.UserModel;
 
@@ -123,12 +119,12 @@ public class FoundationBoardController implements Initializable {
 		_statistics = new StatisticsSidePaneController();
 
 		// load sub panes
-		_practiseStartPage = _main.loadScene("PractiseStartPage.fxml", _practiseStartPageController);
-		_mathStartPage = _main.loadScene("MathStartPage.fxml", _mathStartPageController);
-		_questionScene = _main.loadScene("QuestionScene.fxml", _questionSceneController);
-		_resultScene = _main.loadScene("ResultScene.fxml", _resultSceneController);
-		_practiseSummaryScene = _main.loadScene("PractiseSummaryScene.fxml", _practiseSummarySceneController);
-		_statisticsSidePane = _main.loadScene("StatisticsSidePane.fxml", _statistics);
+		_practiseStartPage = Main.loadScene("PractiseStartPage.fxml", _practiseStartPageController);
+		_mathStartPage = Main.loadScene("MathStartPage.fxml", _mathStartPageController);
+		_questionScene = Main.loadScene("QuestionScene.fxml", _questionSceneController);
+		_resultScene = Main.loadScene("ResultScene.fxml", _resultSceneController);
+		_practiseSummaryScene = Main.loadScene("PractiseSummaryScene.fxml", _practiseSummarySceneController);
+		_statisticsSidePane = Main.loadScene("StatisticsSidePane.fxml", _statistics);
 	}
 
 	/**
@@ -160,18 +156,12 @@ public class FoundationBoardController implements Initializable {
 		switch (function) {
 		case PRACTISE:
 			_modeLabel.setText("Practise");
-
-			// show practise start page
 			_mainPane.getChildren().setAll(_practiseStartPage);
 			break;
-
 		case MATH:
 			_modeLabel.setText("Math Game");
-
-			// show math start page
 			_mainPane.getChildren().setAll(_mathStartPage);
 			break;
-
 		default:
 			throw new RuntimeException("Function can only be PRACTISE or MATH");
 		}
@@ -186,10 +176,9 @@ public class FoundationBoardController implements Initializable {
 	 * @param number
 	 *            (either a number or null)
 	 */
-	public void startPractise(Integer number) {
+	protected void startPractise(Integer number) {
 		_mode = Mode.PRACTISE;
 
-		System.out.println(number);
 		_questionModel.initializePractise(number);
 		_questionModel.NextQA();
 
@@ -209,7 +198,7 @@ public class FoundationBoardController implements Initializable {
 	 *            the gameMode (either Normal or Endless)
 	 * @param playerName
 	 */
-	public void startMathGame(Mode gameMode, String playerName) {
+	protected void startMathGame(Mode gameMode, String playerName) {
 
 		_mode = gameMode;
 
@@ -252,7 +241,7 @@ public class FoundationBoardController implements Initializable {
 	/**
 	 * Show the QuestionScene on the main pane
 	 */
-	public void showQuestionScene() {
+	protected void showQuestionScene() {
 		_mainPane.getChildren().setAll(_questionScene);
 		// ask for current question and answer
 		_questionSceneController.setQuestion(_questionModel.currentQuestion(), _questionModel.currentAnswer());
@@ -262,14 +251,14 @@ public class FoundationBoardController implements Initializable {
 	 * Inform the foundation board controller that the number of trails the user
 	 * took increased by one
 	 */
-	public void incrementTrial() {
+	protected void incrementTrial() {
 		_trailNum++;
 	}
 
 	/**
 	 * Show the ResultScene on the main pane
 	 */
-	public void showResult() {
+	protected void showResult() {
 		Task<Void> check = new Task<Void>() {
 			@Override
 			public Void call() {
@@ -317,7 +306,7 @@ public class FoundationBoardController implements Initializable {
 	 * Record the correctness of the current question and show next question on the
 	 * question scene.
 	 */
-	public void showNextQuestion() {
+	protected void showNextQuestion() {
 
 		// append the new result
 		appendResult();
@@ -342,7 +331,7 @@ public class FoundationBoardController implements Initializable {
 	 * Finish practising/math gaming and go back to home (if is under practise mode)
 	 * or go to personal summary (if is under math mode).
 	 */
-	public void finish() {
+	protected void finish() {
 
 		String title = "Confirm Finish";
 		String body;
@@ -367,12 +356,17 @@ public class FoundationBoardController implements Initializable {
 					showPractiseSummary();
 				} else {
 					_userModel.appendRecord(_userName, _mode, _questionModel.getScore());
+					// reset question model and statistics
+					_statistics.reset();
+					_questionModel.clear();
+					_trailNum = 0;
+					_mode = null;
 					_main.showPersonalPanel(_userName);
 				}
 			}
 		};
 
-		showConfirmDialog(title, body, okHandler, null);
+		Main.showConfirmDialog(title, body, okHandler, null, _background);
 
 	}
 
@@ -449,6 +443,7 @@ public class FoundationBoardController implements Initializable {
 			// reset question model and statistics
 			_statistics.reset();
 			_questionModel.clear();
+			_trailNum = 0;
 			_main.showHome();
 		} else {
 
@@ -465,11 +460,13 @@ public class FoundationBoardController implements Initializable {
 					// reset question model and statistics
 					_statistics.reset();
 					_questionModel.clear();
+					_trailNum = 0;
+					_mode = null;
 					_main.showHome();
 				}
 			};
 
-			showConfirmDialog(title, body, okHandler, null);
+			Main.showConfirmDialog(title, body, okHandler, null, _background);
 
 		}
 
@@ -496,41 +493,6 @@ public class FoundationBoardController implements Initializable {
 	@FXML
 	private void showHelp(ActionEvent event) {
 		_main.showHelp(_function);
-	}
-
-	/**
-	 * Show a jfoenix material confirmation dialog.
-	 * 
-	 * @param title
-	 * @param body
-	 * @param okHandler
-	 * @param cancelHandler
-	 */
-	private void showConfirmDialog(String title, String body, EventHandler<ActionEvent> okHandler,
-			EventHandler<ActionEvent> cancelHandler) {
-		// ask user for confirm
-		JFXDialogLayout content = new JFXDialogLayout();
-		content.setHeading(new Text(title));
-		content.setBody(new Text(body));
-		JFXButton okBtn = new JFXButton("OK");
-		JFXButton cancelBtn = new JFXButton("Cancel");
-		content.setActions(okBtn, cancelBtn);
-		JFXDialog dialog = new JFXDialog(_background, content, DialogTransition.CENTER);
-
-		okBtn.setOnAction(e -> {
-			if (okHandler != null) {
-				okHandler.handle(e);
-			}
-			dialog.close();
-		});
-		cancelBtn.setOnAction(e -> {
-			if (cancelHandler != null) {
-				cancelHandler.handle(e);
-			}
-			dialog.close();
-		});
-
-		dialog.show();
 	}
 
 }

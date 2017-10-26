@@ -69,13 +69,13 @@ public class QuestionModel {
 	// for practice
 	private Integer _numberToPractise;
 	// for question list
-	private List<List> _generatedQuestionList;
+	private List<List<String>> _generatedQuestionList;
 
 	// TODO I think below _toDoList can be a stack rather than a list, subject to
 	// change later
-	private List<List> _toDoList; // this should be a copy of generated list in the begining of each game but
+	private List<List<String>> _toDoList; // this should be a copy of generated list in the begining of each game but
 									// reduce its size as the game going
-	private List<List> _questionsDid;
+	private List<List<String>> _questionsDid;
 	private Integer _lengthOfQuestionList;
 	private boolean _isFinished;
 	private Integer _numOfquestionsGotCorrect;
@@ -103,21 +103,20 @@ public class QuestionModel {
 		// load pre-made question as a list into the program
 		_sets = new HashMap<String, QuestionSet>();
 		_listOfSetNames = new ArrayList<String>();
-		// TODO testing code
-		_listOfSetNames.add("Default");
+		_listOfSetNames.add(Main.DEFAULT_QUESTION_SET_NAME);
 		_preloadSortedQuestionSet = new ArrayList<List<String>>();
-	
-		_toDoList = new ArrayList<List>();
-		_questionsDid = new ArrayList<List>();
-	
-		_generatedQuestionList = new ArrayList<List>();
-	
+
+		_toDoList = new ArrayList<List<String>>();
+		_questionsDid = new ArrayList<List<String>>();
+
+		_generatedQuestionList = new ArrayList<List<String>>();
+
 		_pronounciationHardnessFactor = 1;
 		_numOfquestionsGotCorrect = 0;
-	
+
 		_currentScore = 0;
-	
-		loadLocalLists();// TODO for size of _sets, load them all
+
+		loadLocalLists();
 		Scanner s;
 		InputStream in = Main.class.getResourceAsStream("/Default.csv");
 		s = new Scanner(in);
@@ -158,56 +157,24 @@ public class QuestionModel {
 	}
 
 	// create new question set
-	public boolean createLocalQuestionSet(String setName) {
+	// public boolean createLocalQuestionSet(String setName) {
+	public void createLocalQuestionSet(String setName) {
 		if (isQuestionSetExist(setName)) {
-			Alert alert = new Alert(AlertType.CONFIRMATION);
-			alert.setTitle("Duplicate flag");
-			alert.setHeaderText("Look, a Confirmation Dialog");
-			alert.setContentText("Are you ok with this?");
-
-			Optional<ButtonType> result = alert.showAndWait();
-			if (result.get() == ButtonType.OK) {
-				_sets.get(setName).deleteLocalFile();
-				_sets.remove(setName);
-				_sets.put(setName, new QuestionSet(setName));
-			} else {
-				return false;
-			}
+			_sets.get(setName).deleteLocalFile();
+			_sets.remove(setName);
+			_sets.put(setName, new QuestionSet(setName));
 		} else {
 			_sets.put(setName, new QuestionSet(setName));
 			_listOfSetNames.add(setName);
 		}
-		return true;
 	}
 
 	// delete existing question set
 	// TODO possibility of combining delete confirmation dialogs? How to handle with
 	// different
 	public void deleteLocalQuestionSet(String setName) {
-
-		if (isQuestionSetExist(setName)) {
-			Alert alert = new Alert(AlertType.CONFIRMATION);
-			alert.setTitle("confirm delete");
-			alert.setHeaderText("Look, a Confirmation Dialog");
-			alert.setContentText("Are you ok with this?");
-
-			Optional<ButtonType> result = alert.showAndWait();
-			if (result.get() == ButtonType.OK) {
-				_sets.get(setName).deleteLocalFile();
-				_sets.remove(setName);
-				System.out.println("This is the mileStone " + setName);
-				// TODO find a way to delete local files by java?
-				new BashProcess("./MagicStaff.sh", "delete", setName);
-				_listOfSetNames.remove(setName);
-			}
-		} else {
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("setDidNotFound Dialog");
-			alert.setHeaderText(null);
-			alert.setContentText("I have a great message for you!");
-
-			alert.showAndWait();
-		}
+		new BashProcess("./MagicStaff.sh", "delete", setName);
+		_listOfSetNames.remove(setName);
 	}
 
 	// check if a questionSet is existed in sets
@@ -267,13 +234,15 @@ public class QuestionModel {
 		return _listOfSetNames;
 	}
 
-	public void setUserPickedList(List<List> listGenerated) {
+	public void setUserPickedList(List<List<String>> listGenerated) {
 		_generatedQuestionList = listGenerated;
 	}
 
-	// append question to a list when user want to pick up their own list of
-	// questions Note: the field need to be cleared in certain stages at least
-	// before user want to rebuild a list
+	/**
+	 * append question to a list when user want to pick up their own list of
+	 * questions. Note: the field need to be cleared in certain stages at least
+	 * before user want to rebuild a list
+	 */
 	public void addQuestionToListForUserDefine(String question, String answer) {
 		List<String> pair = new ArrayList<String>();
 		pair.add(question);
@@ -281,8 +250,12 @@ public class QuestionModel {
 		_generatedQuestionList.add(pair);
 	}
 
-	// randomize the order of generated question list, necessarily for each run of
-	// game for user picked list
+	/**
+	 * Randomize the order of generated question list, necessarily for each run of
+	 * game for user picked list
+	 * 
+	 * @param randomize
+	 */
 	public void randomizeQuestionListFromUserDefineWithSelfPick(boolean randomize) {
 		if (_generatedQuestionList == null) {
 			Alert alert = new Alert(AlertType.WARNING);
@@ -295,7 +268,6 @@ public class QuestionModel {
 		}
 	}
 
-	// TODO the use of this function is to be determined
 	public void setLengthOfQuestionList(int length) {
 		_lengthOfQuestionList = length;
 	}
@@ -318,9 +290,11 @@ public class QuestionModel {
 
 	// getListOfQuestions in a specific set
 	public List<List<String>> getQuestionsFromSpecificSet(String setName) {
-		if(setName.equals("Default")) {
-				return _preloadSortedQuestionSet;
+    
+		if (setName == Main.DEFAULT_QUESTION_SET_NAME) {
+			return _preloadSortedQuestionSet;
 		}
+    
 		return _sets.get(setName).getQuestionsInSet();
 	}
 
@@ -329,6 +303,7 @@ public class QuestionModel {
 	public void generateQuestionListFromPreload(String hardness, int numOfQuestions) {
 		Random r = new Random();
 		int barrier = 100;
+		_generatedQuestionList.clear();
 		switch (hardness) {
 		case "easy":
 			for (int i = 0; i < numOfQuestions; i++) {
@@ -355,13 +330,13 @@ public class QuestionModel {
 	// of questions, this function may or may not be called multiple times for each
 	// run depends on the design choice
 	public void generateQuestionListRandom(String setName) {
-
-		if (_lengthOfQuestionList != null) {
+		if (_lengthOfQuestionList != null && setName.equals("Default")) {
+			generateQuestionListFromPreload("medium", _lengthOfQuestionList);
+		} else if (_lengthOfQuestionList != null) {
 			_generatedQuestionList = _sets.get(setName).generateRandomQuestionList(_lengthOfQuestionList);
 		} else {
 			_generatedQuestionList = _sets.get(setName).generateRandomQuestionList(10);
 		}
-		System.out.println("Here is the list: " + _generatedQuestionList.toString());
 	}
 
 	// start question list processing for gaming part (not practise part)
@@ -369,7 +344,6 @@ public class QuestionModel {
 		if (_generatedQuestionList == null) {
 			System.err.println("there is no generated question list to start");
 		} else {
-			System.out.println("Here you are" + _generatedQuestionList.toString());
 			_toDoList = _generatedQuestionList;
 		}
 	}
@@ -434,7 +408,6 @@ public class QuestionModel {
 		return _currentAnswer;
 	}
 
-
 	// return correct maori word
 	public String correctWord() {
 		return _correctWord;
@@ -465,21 +438,19 @@ public class QuestionModel {
 	}
 
 	public void clear() {
-		// TODO testing code
-		System.out.println(_listOfSetNames.toString());
 		// _preloadSortedQuestionSet = new ArrayList<List<String>>();
-	
+
 		_toDoList = _generatedQuestionList;
-		_questionsDid = new ArrayList<List>();
-	
+		_questionsDid = new ArrayList<List<String>>();
+
 		_pronounciationHardnessFactor = 1;
 		_numOfquestionsGotCorrect = 0;
-	
+
 		_currentScore = 0;
 		_numOfquestionsGotCorrect = 0;
 		_currentScore = 0;
 		_isFinished = false;
-	
+
 	}
 
 	public int getScore() {
@@ -512,7 +483,7 @@ public class QuestionModel {
 				_currentScore = score;
 			}
 		}
-	
+
 	}
 
 	private void calculateHardnessFactor() {
@@ -529,11 +500,11 @@ public class QuestionModel {
 		} else {
 			currentQuesHardness = 1.6;
 		}
-	
+
 		double hardnessFactor = ((prevFactor * (_questionsDid.size())) + currentQuesHardness)
 				/ (_questionsDid.size() + 1);
-	
+
 		_pronounciationHardnessFactor = hardnessFactor;
-	
+
 	}
 }

@@ -8,6 +8,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 
+/**
+ * This class is the customized list cell used in the list views of the
+ * LeaderBoard.
+ */
 public class UserRankListViewCell extends ListCell<UserDataTuple> {
 
 	@FXML
@@ -22,6 +26,9 @@ public class UserRankListViewCell extends ListCell<UserDataTuple> {
 	@FXML
 	private Label _scoreLabel;
 
+	/**
+	 * Constructor
+	 */
 	public UserRankListViewCell() {
 		// load the view for the cell
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/UserRankListCell.fxml"));

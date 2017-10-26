@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import enums.Mode;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -57,19 +58,23 @@ public class MathStartPageController implements Initializable {
 					_userNameTF.setText(oldValue);
 					_tipMessage.setTextFill(Color.RED);
 				} else {
-					// TODO need to set back to default, current just use black
 					_tipMessage.setTextFill(Color.BLACK);
 				}
 			} else { // if user input is empty
-				// TODO need to set back to default, current just use black
 				_tipMessage.setTextFill(Color.BLACK);
 			}
 
 		});
 	}
 
+	/**
+	 * Event handler for _normalModeButton on action. Ask foundation board to start
+	 * a normal mode math game
+	 * 
+	 * @param event
+	 */
 	@FXML
-	public void normalModeButtonClicked() {
+	private void normalModeButtonClicked(ActionEvent event) {
 		if (_userNameTF.getText().isEmpty()) {
 			// if the user didn't enter his/her name, use "Guest Player" as the name and
 			// start the game. As space cannot exist in user's input, there is no need to
@@ -80,8 +85,14 @@ public class MathStartPageController implements Initializable {
 		}
 	}
 
+	/**
+	 * Event handler for _endlessModeButton on action. Ask foundation board to start
+	 * a endless mode math game
+	 * 
+	 * @param event
+	 */
 	@FXML
-	public void endlessModeButtonClicked() {
+	private void endlessModeButtonClicked(ActionEvent event) {
 		if (_userNameTF.getText().isEmpty()) {
 			_parentController.startMathGame(Mode.ENDLESSMATH, "Guest Player");
 		} else {

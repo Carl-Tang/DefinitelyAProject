@@ -18,7 +18,7 @@ public class QuestionSet {
 	private Map<String, String> _QAPairs = new HashMap<String, String>();
 	private File _theSet;
 
-	public QuestionSet(String nameOfSet) {
+	protected QuestionSet(String nameOfSet) {
 		_nameOfSet = nameOfSet;
 		_theSet = new File("QuestionSets/" + _nameOfSet + ".csv");
 		loadList();
@@ -51,16 +51,10 @@ public class QuestionSet {
 		}
 	}
 
-	public void addQAPair(String question, String answer) {
-		_QAPairs.put(question, answer);
-		updateLocalFile();
-	}
-
 	/**
 	 * Sync the changes in the hashmap to the local file
 	 */
 	private void updateLocalFile() {
-		// TODO Auto-generated method stub
 		deleteLocalFile();
 		loadList();
 		for (Entry<String, String> entry : _QAPairs.entrySet()) {
@@ -76,16 +70,13 @@ public class QuestionSet {
 
 	}
 
-	public String getSetName() {
-		return _nameOfSet;
+	protected void addQAPair(String question, String answer) {
+		_QAPairs.put(question, answer);
+		updateLocalFile();
 	}
 
-	public List<List> generateUserDefined() {
-		return null;
-	}
-
-	public List<List> generateRandomQuestionList(int numOfQuestions) {
-		List<List> randomList = new ArrayList<List>();
+	protected List<List<String>> generateRandomQuestionList(int numOfQuestions) {
+		List<List<String>> randomList = new ArrayList<List<String>>();
 		for (int i = 0; i < numOfQuestions; i++) {
 			String question = (String) _QAPairs.keySet().toArray()[new Random()
 					.nextInt(_QAPairs.keySet().toArray().length)];
@@ -98,16 +89,28 @@ public class QuestionSet {
 		return randomList;
 	}
 
-	public void delete(String key) {
+	protected void delete(String key) {
 		_QAPairs.remove(key);
 		updateLocalFile();
 	}
 
-	public void deleteLocalFile() {
+	protected void deleteLocalFile() {
 		_theSet.delete();
 	}
 
-	public List<List<String>> getQuestionsInSet() {
+	protected boolean questionExist(String key) {
+		String value = _QAPairs.get(key);
+		if (value != null) {
+			return true;
+		}
+		return false;
+	}
+
+	protected String getSetName() {
+		return _nameOfSet;
+	}
+
+	protected List<List<String>> getQuestionsInSet() {
 
 		List<List<String>> listForEdit = new ArrayList<List<String>>();
 		for (Entry<String, String> entry : _QAPairs.entrySet()) {
@@ -115,17 +118,7 @@ public class QuestionSet {
 			newEntry.add(entry.getKey());
 			newEntry.add(entry.getValue());
 			listForEdit.add(newEntry);
-			System.out.println(entry.getKey() + "=" + entry.getValue());
 		}
-		System.out.println("The size is" + listForEdit.size());
 		return listForEdit;
-	}
-
-	public boolean questionExist(String key) {
-		String value = _QAPairs.get(key);
-		if (value != null) {
-			return true;
-		}
-		return false;
 	}
 }

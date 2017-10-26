@@ -1,13 +1,31 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
-.whiteButton {
-	-fx-background-color: white;
+.scroll-bar {
+	-fx-background-color: transparent;
+	-fx-scale-x: 1.3;
 }
 
-.blueButton {
-	 -fx-background-color: #1976d2;
+.scroll-bar > .thumb {
+	-fx-background-color: #bdbdbd;
+	-fx-background-radius: 0.0;
 }
 
-.whiteBox {
-	-fx-background-color: white;
-	-fx-effect: dropshadow( gaussian , black , 0 , 0 , <number> , <number> )
+.scroll-bar > .thumb:hover {
+	-fx-background-color: #9e9e9e;
+}
+
+.scroll-bar > .thumb:pressed {
+	-fx-background-color: #757575;
+}
+
+.decrement-arrow {
+	-fx-shape: "M 100 300 L 300 300 L 200 100 z";
+}
+
+.increment-arrow {
+	-fx-shape: "M 100 100 L 300 100 L 200 300 z";
+}
+
+.decrement-button:hover, .increment-button:hover {
+	-fx-background-color: transparent;
+	-fx-border-width: 0.0;
 }

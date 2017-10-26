@@ -44,35 +44,6 @@ public class HomeController implements Initializable {
 		_main = main;
 	}
 
-	// Event Listener on Button[#_practiseBtn].onAction
-	@FXML
-	public void goPractise(ActionEvent event) {
-		_main.switchScene(Function.PRACTISE);
-	}
-
-	// Event Listener on Button[#_playBtn].onAction
-	public void goPlay(ActionEvent event) {
-		_main.switchScene(Function.MATH);
-	}
-
-	// Event Listener on Button[#_scoreBtn].onAction
-	@FXML
-	public void showScore(ActionEvent event) {
-		_main.switchScene(Function.SCORE);
-	}
-
-	// Event Listener on Button[#_settingsBtn].onAction
-	@FXML
-	public void goSettings(ActionEvent event) {
-		_main.switchScene(Function.SETTINGS);
-	}
-
-	// Event Listener on Button[#_helpBtn].onAction
-	@FXML
-	public void showHelp(ActionEvent event) {
-		_main.showHelp(Function.HELP);
-	}
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// set the icons in the buttons
@@ -81,5 +52,55 @@ public class HomeController implements Initializable {
 		_scoreIcon.setImage(new Image(Main.class.getResourceAsStream("/icons/icons8-Leaderboard-96.png")));
 		_settingsIcon.setImage(new Image(Main.class.getResourceAsStream("/icons/icons8-Settings-96.png")));
 		_helpIcon.setImage(new Image(Main.class.getResourceAsStream("/icons/icons8-Question Mark-96.png")));
+	}
+
+	/**
+	 * Event Listener on Button[#_practiseBtn].onAction
+	 * 
+	 * @param event
+	 */
+	@FXML
+	private void goPractise(ActionEvent event) {
+		_main.switchScene(Function.PRACTISE);
+	}
+
+	/**
+	 * Event Listener on Button[#_playBtn].onAction
+	 * 
+	 * @param event
+	 */
+	@FXML
+	private void goPlay(ActionEvent event) {
+		_main.switchScene(Function.MATH);
+	}
+
+	/**
+	 * Event Listener on Button[#_scoreBtn].onAction
+	 * 
+	 * @param event
+	 */
+	@FXML
+	private void showScore(ActionEvent event) {
+		_main.switchScene(Function.SCORE);
+	}
+
+	/**
+	 * Event Listener on Button[#_settingsBtn].onAction
+	 * 
+	 * @param event
+	 */
+	@FXML
+	private void goSettings(ActionEvent event) {
+		_main.switchScene(Function.SETTINGS);
+	}
+
+	/**
+	 * Event Listener on Button[#_helpBtn].onAction
+	 * 
+	 * @param event
+	 */
+	@FXML
+	private void showHelp(ActionEvent event) {
+		_main.showHelp(Function.HELP);
 	}
 }

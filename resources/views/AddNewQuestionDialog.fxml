@@ -2,15 +2,17 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<GridPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" >
+<GridPane style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
 	<columnConstraints>
 		<ColumnConstraints />
 	</columnConstraints>
@@ -18,24 +20,54 @@
 		<RowConstraints />
 	</rowConstraints>
 	<children>
-		<VBox prefHeight="200.0" prefWidth="400.0">
+		<VBox prefHeight="150.0" prefWidth="400.0">
 			<children>
-				<Region prefHeight="20.0" prefWidth="400.0" />
-				<Label text="Enter your equation below" />
-				<Region prefHeight="20.0" prefWidth="400.0" />
+				<Label text="Enter your equation below">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font></Label>
 				<HBox alignment="CENTER" prefHeight="50.0" prefWidth="400.0">
 					<children>
-						<JFXTextField fx:id="questionTextField" prefHeight="50.0"
-							prefWidth="250.0" />
+						<JFXTextField fx:id="questionTextField" prefHeight="50.0" prefWidth="250.0" unFocusColor="#bdbdbd">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </HBox.margin></JFXTextField>
 						<Label text="=" />
-						<JFXTextField fx:id="answerTestField" prefHeight="50.0"
-							prefWidth="60.0" />
+						<JFXTextField fx:id="answerTextField" editable="false" prefHeight="50.0" prefWidth="60.0" unFocusColor="#bdbdbd">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
+                     </HBox.margin></JFXTextField>
 					</children>
 				</HBox>
-				<HBox alignment="CENTER_RIGHT" prefHeight="75.0" prefWidth="400.0">
+				<HBox alignment="CENTER_RIGHT" prefHeight="60.0" prefWidth="400.0">
 					<children>
-						<JFXButton fx:id="confirmAdd" defaultButton="true"
-							onAction="#addQuestion" text="Add" />
+                  <VBox fx:id="warningBox" alignment="CENTER_LEFT" visible="false">
+                     <children>
+                        <Label text="The question is not valid. " textFill="RED">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="answerFormatWarningLabel" text="Answer should be between 1 and 99." textFill="RED">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+						<JFXButton fx:id="confirmAdd" buttonType="RAISED" defaultButton="true" disable="true" onAction="#addQuestion" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: white;" text="Add">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="20.0" right="30.0" top="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></JFXButton>
 					</children>
 				</HBox>
 			</children>

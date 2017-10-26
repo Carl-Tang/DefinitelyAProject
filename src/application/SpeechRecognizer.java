@@ -55,7 +55,6 @@ public final class SpeechRecognizer {
 
 		String result = "";
 		for (String s : htkResult) {
-			System.out.println(s);
 			if (!s.startsWith("#") && !s.startsWith("\"") && !s.startsWith(".") && !s.equals("sil")) {
 				result = result + s + " ";
 			}

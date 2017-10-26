@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.AudioClip;
+import javafx.scene.paint.Color;
 import models.QuestionModel;
 
 public class ResultSceneController {
@@ -43,7 +44,7 @@ public class ResultSceneController {
 
 	private FoundationBoardController _parentController;
 
-	public ResultSceneController(FoundationBoardController foundationBoardController) {
+	protected ResultSceneController(FoundationBoardController foundationBoardController) {
 		_parentController = foundationBoardController;
 	}
 
@@ -52,7 +53,7 @@ public class ResultSceneController {
 	 * 
 	 * @param canRetry
 	 */
-	public void setCanRetry(boolean canRetry) {
+	protected void setCanRetry(boolean canRetry) {
 		if (canRetry) {
 			_retryBtn.setDisable(false);
 		} else {
@@ -65,7 +66,7 @@ public class ResultSceneController {
 	 * 
 	 * @param userAnswer
 	 */
-	public void setUserAnswer(String userAnswer) {
+	protected void setUserAnswer(String userAnswer) {
 		if (userAnswer == null) {
 			_usrAnsBox.setVisible(false);
 		} else {
@@ -85,7 +86,7 @@ public class ResultSceneController {
 	 * 
 	 * @param isFinal
 	 */
-	public void setFinal(boolean isFinal) {
+	protected void setFinal(boolean isFinal) {
 		if (isFinal) {
 			_nextBtn.setText("Final question");
 			_nextBtn.setDisable(true);
@@ -100,11 +101,13 @@ public class ResultSceneController {
 	 * 
 	 * @param isCorrect
 	 */
-	public void resultIsCorrect(boolean isCorrect) {
+	protected void resultIsCorrect(boolean isCorrect) {
 		if (!isCorrect) {
 			_correctness.setText("Wrong");
+			_correctness.setTextFill(Color.RED);
 		} else {
 			_correctness.setText("Correct");
+			_correctness.setTextFill(Color.GREEN);
 		}
 	}
 
@@ -113,7 +116,7 @@ public class ResultSceneController {
 	 * 
 	 * @param correctWord
 	 */
-	public void showCorrectAnswer(String correctWord) {
+	protected void showCorrectAnswer(String correctWord) {
 		if (correctWord != null && !correctWord.isEmpty()) {
 			_correctAnsLabel.setText(correctWord);
 			_correctAnsBox.setVisible(true);
@@ -122,18 +125,35 @@ public class ResultSceneController {
 		}
 	}
 
+	/**
+	 * Event handler for finishBtn on action. Asks FoundationBoard to finish the
+	 * game or practise.
+	 * 
+	 * @param event
+	 */
 	@FXML
-	void finishBtnClicked(ActionEvent event) {
+	private void finishBtnClicked(ActionEvent event) {
 		_parentController.finish();
 	}
 
+	/**
+	 * Event handler for nextBtn on action. Asks FoundationBoard to show next
+	 * question.
+	 * 
+	 * @param event
+	 */
 	@FXML
-	void nextBtnClicked(ActionEvent event) {
+	private void nextBtnClicked(ActionEvent event) {
 		_parentController.showNextQuestion();
 	}
 
+	/**
+	 * Event handler for replayBtn on action. Replay the recorded user speech.
+	 * 
+	 * @param event
+	 */
 	@FXML
-	void replayBtnClicked(ActionEvent event) {
+	private void replayBtnClicked(ActionEvent event) {
 		Task<Void> replay = new Task<Void>() {
 			@Override
 			public Void call() {
@@ -152,8 +172,15 @@ public class ResultSceneController {
 		new Thread(replay).start();
 	}
 
+	/**
+	 * Event handler for retryBtn on action. Ask FoundationBoard to re show the
+	 * question scene. Trail number is automatically incremented by the
+	 * FoundationBoard.
+	 * 
+	 * @param event
+	 */
 	@FXML
-	void retryBtnClicked(ActionEvent event) {
+	private void retryBtnClicked(ActionEvent event) {
 		_parentController.showQuestionScene();
 	}
 

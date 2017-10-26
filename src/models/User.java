@@ -23,7 +23,12 @@ public class User {
 	private Mode _latestGameMode;
 	private Integer _latestGameScore;
 
-	User(String name) {
+	/**
+	 * Construct a new user instance using the name of the user.
+	 * 
+	 * @param name
+	 */
+	protected User(String name) {
 		_name = name;
 		_results = new HashMap<Integer, List<Integer>>();
 
@@ -32,14 +37,12 @@ public class User {
 			_localFile = new File("usrRecords/" + name + ".csv");
 
 			if (!_localFile.exists()) {
-				// create file if does not exist
 				try {
 					_localFile.createNewFile();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			} else {
-				// read all the game records of the user
 				Collection<String> recordList;
 				recordList = Files.readAllLines(Paths.get(_localFile.toURI()));
 
@@ -47,7 +50,6 @@ public class User {
 					// initialize a new user
 					for (String record : recordList) {
 						String[] entry = record.split(",");
-						// add the records to field _results and renew latest record
 						if (entry[0].equals("Normal")) {
 							this.addToResults(NORMAL, Integer.parseInt(entry[1]));
 							_latestGameMode = Mode.NORMALMATH;
@@ -72,7 +74,7 @@ public class User {
 	 * @param gameMode
 	 * @param score
 	 */
-	public void appendNewRecord(Mode gameMode, int score) {
+	protected void appendNewRecord(Mode gameMode, int score) {
 		int mode;
 		switch (gameMode) {
 		case NORMALMATH:
@@ -115,14 +117,18 @@ public class User {
 		}
 	}
 
-	public String getName() {
+	/**
+	 * 
+	 * @return the name of the user
+	 */
+	protected String getName() {
 		return _name;
 	}
 
 	/**
 	 * @return The game mode of the latest game.
 	 */
-	public String reportLatestGameMode() {
+	protected String reportLatestGameMode() {
 		if (_latestGameMode == null) {
 			return "No Record";
 		} else {
@@ -141,7 +147,7 @@ public class User {
 	 * 
 	 * @return The score of the latest game
 	 */
-	public String reportLatestGameScore() {
+	protected String reportLatestGameScore() {
 		if (_latestGameScore == null) {
 			return "No Record";
 		} else {
@@ -155,7 +161,7 @@ public class User {
 	 * @return An int array of the score history of the game mode, an array of size
 	 *         1 which only contains a 0 will be returned if there is no record
 	 */
-	public int[] getHistory(Mode gameMode) {
+	protected int[] getHistory(Mode gameMode) {
 		List<Integer> resultList;
 		// get the score history of the specific game mode
 		switch (gameMode) {
@@ -178,7 +184,7 @@ public class User {
 			}
 			return history;
 		} else {
-			// otherwise return null
+			// otherwise return an array with size one, where the value is 0
 			history = new int[1];
 			history[0] = 0;
 			return history;
@@ -193,7 +199,7 @@ public class User {
 	 * @return personal highest score of the normal mode or endless mode games, 0
 	 *         will be returned if the user has no record in this game mode
 	 */
-	public Integer getPersonalBest(Mode gameMode) {
+	protected Integer getPersonalBest(Mode gameMode) {
 		List<Integer> resultList;
 		switch (gameMode) {
 		case NORMALMATH:

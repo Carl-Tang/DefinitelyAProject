@@ -3,6 +3,11 @@ package application;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
+import com.jfoenix.controls.JFXDialog.DialogTransition;
+
 import controllers.FoundationBoardController;
 import controllers.HelpController;
 import controllers.HomeController;
@@ -11,6 +16,8 @@ import controllers.PersonalPanelController;
 import controllers.SettingsController;
 import enums.Function;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import models.QuestionModel;
 import models.UserModel;
@@ -20,7 +27,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.JavaFXBuilderFactory;
 
@@ -33,8 +42,9 @@ import javafx.fxml.JavaFXBuilderFactory;
 public class Main extends Application {
 
 	// constants
-	public static final int NUMLOWERBOUND = 1;
-	public static final int NUMUPPERBOUND = 99;
+	public static final int NUMBER_LOWER_BOUND = 1;
+	public static final int NUMBER_UPPER_BOUND = 99;
+	public static final String DEFAULT_QUESTION_SET_NAME = "Default";
 
 	// stages
 	private Stage _primaryStage;
@@ -59,7 +69,8 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		_primaryStage = primaryStage;
-		_primaryStage.setMinHeight(640);
+		_primaryStage.setTitle("Taatai!");
+		_primaryStage.setMinHeight(660);
 		_primaryStage.setMinWidth(1000);
 
 		// initialize models
@@ -105,6 +116,7 @@ public class Main extends Application {
 			break;
 		case SETTINGS:
 			showScene(_primaryStage, _settings);
+			_settingsController.initData();
 			break;
 		default:
 			throw new RuntimeException(
@@ -119,10 +131,11 @@ public class Main extends Application {
 			_helpStage.toFront();
 		} else {
 			_helpStage = new Stage();
-			_helpStage.setMinHeight(700);
-			_helpStage.setMinWidth(1200);
+			_helpStage.setMinHeight(500);
+			_helpStage.setMinWidth(700);
+			_helpStage.setTitle("Help");
 			showScene(_helpStage, _helpScene);
-			_helpSceneController.switchTo(f);
+			// _helpSceneController.switchTo(f);
 		}
 	}
 
@@ -135,6 +148,11 @@ public class Main extends Application {
 		_personalPanelController.showPersonalHistory(userName);
 	}
 
+	public static void main(String[] args) {
+		System.out.println("Loading...");
+		launch(args);
+	}
+
 	/**
 	 * Get a FXMLLoader that loads the fxml file into a root pane and set the
 	 * controller passes in as its controller.
@@ -143,7 +161,7 @@ public class Main extends Application {
 	 * @param controller
 	 * @return Scene loaded from the fxml file
 	 */
-	public Pane loadScene(String fxml, Object controller) {
+	public static Pane loadScene(String fxml, Object controller) {
 		// loading fxml from FXML loader
 		FXMLLoader loader = new FXMLLoader();
 		InputStream in = Main.class.getResourceAsStream("/views/" + fxml);
@@ -171,7 +189,7 @@ public class Main extends Application {
 	 * @param stage
 	 * @param root
 	 */
-	public void showScene(Stage stage, Pane root) {
+	public static void showScene(Stage stage, Pane root) {
 		try {
 			if (root == null) {
 				throw new RuntimeException("The root can not be null.");
@@ -180,9 +198,11 @@ public class Main extends Application {
 			Scene scene = stage.getScene();
 			if (scene == null) {
 				scene = new Scene(root);
+				scene.getStylesheets().add(Main.class.getResource("/views/application.css").toExternalForm());
 				stage.setScene(scene);
 			} else {
 				scene.setRoot(root);
+				root.resize(scene.getWidth(), scene.getHeight());
 			}
 			stage.show();
 		} catch (RuntimeException e) {
@@ -196,9 +216,84 @@ public class Main extends Application {
 		}
 	}
 
-	public static void main(String[] args) {
-		System.out.println("Loading...");
-		launch(args);
+	/**
+	 * Show a jfoenix material confirmation dialog on the given background
+	 * stackPane.
+	 * 
+	 * @param title
+	 * @param body
+	 * @param okHandler
+	 * @param cancelHandler
+	 * @param background
+	 */
+	public static void showConfirmDialog(String title, String body, EventHandler<ActionEvent> okHandler,
+			EventHandler<ActionEvent> cancelHandler, StackPane background) {
+		// ask user for confirm
+		JFXDialogLayout content = new JFXDialogLayout();
+		content.setHeading(new Text(title));
+		content.setBody(new Text(body));
+		JFXButton okBtn = new JFXButton("OK");
+		okBtn.setDefaultButton(true);
+		JFXButton cancelBtn = new JFXButton("Cancel");
+		content.setActions(okBtn, cancelBtn);
+		JFXDialog dialog = new JFXDialog(background, content, DialogTransition.CENTER);
+
+		okBtn.setOnAction(e -> {
+			if (okHandler != null) {
+				okHandler.handle(e);
+			}
+			dialog.close();
+		});
+		cancelBtn.setOnAction(e -> {
+			if (cancelHandler != null) {
+				cancelHandler.handle(e);
+			}
+			dialog.close();
+		});
+
+		dialog.show();
+	}
+
+	/**
+	 * Show a jfoenix material error dialog on the given background stackPane.
+	 * 
+	 * @param title
+	 * @param body
+	 * @param okHandler
+	 * @param background
+	 */
+	public static void showErrorDialog(String title, String body, EventHandler<ActionEvent> okHandler,
+			StackPane background) {
+		// ask user for confirm
+		JFXDialogLayout content = new JFXDialogLayout();
+		content.setHeading(new Text(title));
+		content.setBody(new Text(body));
+		JFXButton okBtn = new JFXButton("OK");
+		okBtn.setDefaultButton(true);
+		content.setActions(okBtn);
+		JFXDialog dialog = new JFXDialog(background, content, DialogTransition.CENTER);
+
+		okBtn.setOnAction(e -> {
+			if (okHandler != null) {
+				okHandler.handle(e);
+			}
+			dialog.close();
+		});
+
+		dialog.show();
+	}
+
+	/**
+	 * Show a jfoenix material information dialog on the given background stackPane.
+	 * 
+	 * @param title
+	 * @param body
+	 * @param okHandler
+	 * @param background
+	 */
+	public static void showInfoDialog(String title, String body, EventHandler<ActionEvent> okHandler,
+			StackPane background) {
+		Main.showErrorDialog(title, body, okHandler, background);
 	}
 
 }
