@@ -68,7 +68,7 @@ public class PersonalPanelController {
 		int[] history = model.getPersonalHistory(Mode.NORMALMATH, userName);
 		XYChart.Series<String, Number> series = new Series<String, Number>();
 		for (int i = 0; i < history.length; i++) {
-			series.getData().add(new Data<String, Number>("" + i, history[i]));
+			series.getData().add(new Data<String, Number>("" + (i + 1), history[i]));
 		}
 		_normalModeChart.getData().add(series);
 
@@ -80,7 +80,7 @@ public class PersonalPanelController {
 		history = model.getPersonalHistory(Mode.ENDLESSMATH, userName);
 		series = new Series<String, Number>();
 		for (int i = 0; i < history.length; i++) {
-			series.getData().add(new Data<String, Number>("" + i, history[i]));
+			series.getData().add(new Data<String, Number>("" + (i + 1), history[i]));
 		}
 		_endlessModeChart.getData().add(series);
 

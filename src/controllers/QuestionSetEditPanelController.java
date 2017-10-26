@@ -56,9 +56,12 @@ public class QuestionSetEditPanelController implements Initializable {
 
 	private SettingsController _settingsController;
 
+	private boolean _isDialogShowing;
+
 	protected QuestionSetEditPanelController(SettingsController settingsController, Stage editPanelStage) {
 		_editPanelStage = editPanelStage;
 		_settingsController = settingsController;
+		_isDialogShowing = false;
 		// stop the stage from closing if the question set is still empty and show an
 		// error panel
 		_editPanelStage.setOnCloseRequest(e -> {
@@ -94,22 +97,25 @@ public class QuestionSetEditPanelController implements Initializable {
 
 	/**
 	 * Add key event handler to the scene to handle keyboard shortcuts. The
-	 * shortcuts are: "Delete" for deleting the selected question, "Enter" for done
-	 * creation, and "Ctrl+N" to add a new question.
+	 * shortcuts are: "Delete" for deleting the selected question, "Enter" or
+	 * "CTRL+S" for done creation, and "Ctrl+N" to add a new question.
 	 */
 	protected void enableShortcut() {
 		_editPanelStage.getScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
 
-			final KeyCombination keyComb = new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN);
+			final KeyCombination CTRL_N = new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN);
+			final KeyCombination CTRL_S = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
 
 			@Override
 			public void handle(KeyEvent e) {
-				if (e.getCode() == KeyCode.DELETE) {
-					deleteSelectedQuestion(null);
-				} else if (e.getCode() == KeyCode.ENTER) {
-					doneCreation(null);
-				} else if (keyComb.match(e)) {
-					addNewQuestion(null);
+				if (!_isDialogShowing) {
+					if (e.getCode() == KeyCode.DELETE) {
+						deleteSelectedQuestion(null);
+					} else if (e.getCode() == KeyCode.ENTER || CTRL_S.match(e)) {
+						doneCreation(null);
+					} else if (CTRL_N.match(e)) {
+						addNewQuestion(null);
+					}
 				}
 			}
 
@@ -121,6 +127,7 @@ public class QuestionSetEditPanelController implements Initializable {
 		_currentSetName = setName;
 		_listOfQuestions = new ArrayList<String>();
 		loadQuestions();
+		questionList.getSelectionModel().select(0);
 	}
 
 	protected void loadQuestions() {
@@ -152,7 +159,10 @@ public class QuestionSetEditPanelController implements Initializable {
 	@FXML
 	private void doneCreation(ActionEvent event) {
 		if (_listOfQuestions.isEmpty()) {
-			Main.showErrorDialog("Error!", "The question set should contain at least one question.", null, background);
+			Main.showErrorDialog("Error!", "The question set should contain at least one question.", (e) -> {
+				_isDialogShowing = false;
+			}, background);
+			_isDialogShowing = true;
 		} else {
 			_settingsController.updateSetList();
 			_editPanelStage.close();
@@ -163,9 +173,41 @@ public class QuestionSetEditPanelController implements Initializable {
 	private void deleteSelectedQuestion(ActionEvent event) {
 		String selectedQ = questionList.getSelectionModel().getSelectedItem();
 		if (selectedQ != null && !selectedQ.isEmpty()) {
+			int i = questionList.getItems().indexOf(selectedQ);
 			String key = selectedQ.split("=")[0];
-			_questionModel.deleteQuestionFromQuestionSet(_currentSetName, key);
+			if (_questionModel.checkIfaQuestionExistInSet(_currentSetName, key)) {
+				Main.showConfirmDialog("Confirm delete", "Are you sure you want to delete this:", (e) -> {
+					_questionModel.deleteQuestionFromQuestionSet(_currentSetName, key);
+					loadQuestions();
+
+					if (questionList.getItems().size() > i) {
+						questionList.getSelectionModel().select(i);
+					} else if (questionList.getItems().size() == i) {
+						questionList.getSelectionModel().select(i - 1);
+					}
+
+					_isDialogShowing = false;
+				}, (e) -> {
+					_isDialogShowing = false;
+				}, background);
+				_isDialogShowing = true;
+			} else {
+				Main.showErrorDialog("Warning", "No question selected.", (e) -> {
+					_isDialogShowing = false;
+				}, background);
+				_isDialogShowing = true;
+			}
+
 		}
-		loadQuestions();
+	}
+
+	@FXML
+	private void showShortcuts(ActionEvent event) {
+		String body = "Press CTRL+N to add a new question.\n" + "Press DELETE to delete the selected question.\n"
+				+ "Press ENTER or CTRL+S to finish editing and close this window.";
+		Main.showInfoDialog("Shortcuts", body, (e) -> {
+			_isDialogShowing = false;
+		}, background);
+		_isDialogShowing = true;
 	}
 }

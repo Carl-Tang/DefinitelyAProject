@@ -20,6 +20,7 @@ import enums.Mode;
 
 import com.jfoenix.controls.JFXDrawer;
 
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -283,12 +284,22 @@ public class FoundationBoardController implements Initializable {
 				_resultSceneController.setCanRetry(false);
 			}
 
-			// if is in practise mode and the user's answer in incorrect, show the
-			// correct answer in result scene
-			if (_mode == Mode.PRACTISE && !_questionModel.isUserCorrect()) {
-				_resultSceneController.showCorrectAnswer(_questionModel.correctWord());
-			} else {
+			if (_questionModel.isUserCorrect()) {
 				_resultSceneController.showCorrectAnswer(null);
+			} else {
+				switch (_mode) {
+				case PRACTISE:
+					_resultSceneController.showCorrectAnswer(_questionModel.correctWord());
+					break;
+				case NORMALMATH:
+				case ENDLESSMATH:
+					if (_trailNum == _maxTrailNum) {
+						_resultSceneController.showCorrectAnswer(_questionModel.correctWord());
+					} else {
+						_resultSceneController.showCorrectAnswer(null);
+					}
+					break;
+				}
 			}
 
 			// check is the question the final one
@@ -335,13 +346,14 @@ public class FoundationBoardController implements Initializable {
 
 		String title = "Confirm Finish";
 		String body;
-		if (_mode == Mode.PRACTISE) {
+		switch (_mode) {
+		case PRACTISE:
 			body = "Do you want to finish practising and show summary?";
-		} else if (_mode == Mode.NORMALMATH) {
-			body = "Do you want to skip the rest questions and save your result? "
-					+ "(The rest of the questions will be marked wrong)";
-		} else {
-			body = "Do you want to skip the rest questions and save your current result?";
+			break;
+		default:
+			body = "Do you want to skip the rest of the questions and save your result? "
+					+ "(The rest of the questions will not be marked)";
+			break;
 		}
 
 		EventHandler<ActionEvent> okHandler = new EventHandler<ActionEvent>() {
@@ -354,6 +366,7 @@ public class FoundationBoardController implements Initializable {
 				if (_mode == Mode.PRACTISE) {
 					_mode = null;
 					showPractiseSummary();
+					_wrongQuestions.clear();
 				} else {
 					_userModel.appendRecord(_userName, _mode, _questionModel.getScore());
 					// reset question model and statistics
@@ -363,11 +376,17 @@ public class FoundationBoardController implements Initializable {
 					_mode = null;
 					_main.showPersonalPanel(_userName);
 				}
+				Platform.runLater(() -> {
+					_statisticsBar.close();
+				});
 			}
 		};
 
-		Main.showConfirmDialog(title, body, okHandler, null, _background);
-
+		if (!_questionModel.hasNext()) {
+			okHandler.handle(null);
+		} else {
+			Main.showConfirmDialog(title, body, okHandler, null, _background);
+		}
 	}
 
 	/**
@@ -460,9 +479,13 @@ public class FoundationBoardController implements Initializable {
 					// reset question model and statistics
 					_statistics.reset();
 					_questionModel.clear();
+					_wrongQuestions.clear();
 					_trailNum = 0;
 					_mode = null;
 					_main.showHome();
+					Platform.runLater(() -> {
+						_statisticsBar.close();
+					});
 				}
 			};
 
@@ -479,11 +502,13 @@ public class FoundationBoardController implements Initializable {
 	 */
 	@FXML
 	private void showStatisticsBar(ActionEvent event) {
-		if (_statisticsBar.isHidden()) {
-			_statisticsBar.open();
-		} else {
-			_statisticsBar.close();
-		}
+		Platform.runLater(() -> {
+			if (_statisticsBar.isHidden()) {
+				_statisticsBar.open();
+			} else {
+				_statisticsBar.close();
+			}
+		});
 	}
 
 	/**
@@ -492,7 +517,9 @@ public class FoundationBoardController implements Initializable {
 	 */
 	@FXML
 	private void showHelp(ActionEvent event) {
-		_main.showHelp(_function);
+		Platform.runLater(() -> {
+			_main.showHelp(_function);
+		});
 	}
 
 }

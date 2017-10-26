@@ -12,17 +12,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<StackPane fx:id="_background" xmlns="http://javafx.com/javafx/8.0.111"
-	xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="_background" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
 		<VBox>
 			<children>
-				<HBox alignment="CENTER" minHeight="-Infinity" prefHeight="50.0"
-					style="-fx-background-color: #1976d2;">
+				<HBox alignment="CENTER" minHeight="-Infinity" prefHeight="50.0" style="-fx-background-color: #1976d2;">
 					<children>
-						<JFXButton fx:id="_homeBtn" onAction="#backToHome"
-							prefHeight="50.0" prefWidth="150.0" text="Home" textFill="WHITE">
+						<JFXButton fx:id="_homeBtn" onAction="#backToHome" prefHeight="50.0" prefWidth="150.0" text="Home" textFill="WHITE">
 							<font>
 								<Font name="System Bold" size="14.0" />
 							</font>
@@ -40,12 +36,10 @@
 						<Region prefWidth="150.0" />
 					</children>
 					<effect>
-						<DropShadow blurType="GAUSSIAN" height="30.0" radius="7.0"
-							width="0.0" />
+						<DropShadow blurType="GAUSSIAN" height="30.0" radius="7.0" width="0.0" />
 					</effect>
 				</HBox>
-				<HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0"
-					prefWidth="1000.0" VBox.vgrow="ALWAYS">
+				<HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="1000.0" VBox.vgrow="ALWAYS">
 					<children>
 						<VBox alignment="CENTER" prefWidth="800.0" HBox.hgrow="ALWAYS">
 							<children>
@@ -56,16 +50,12 @@
 												<Insets bottom="60.0" left="80.0" right="80.0" top="60.0" />
 											</padding>
 										</HBox>
-										<JFXDrawer fx:id="_statisticsBar" defaultDrawerSize="200.0"
-											direction="RIGHT" maxHeight="-Infinity" minHeight="-Infinity"
-											prefHeight="500.0" />
+										<JFXDrawer fx:id="_statisticsBar" defaultDrawerSize="210.0" direction="RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="500.0" />
 									</children>
 								</HBox>
-								<HBox alignment="BOTTOM_CENTER" minHeight="-Infinity"
-									prefHeight="50.0">
+								<HBox alignment="BOTTOM_CENTER" minHeight="-Infinity" prefHeight="50.0">
 									<children>
-										<JFXButton fx:id="_helpBtn" onAction="#showHelp"
-											prefHeight="50.0" prefWidth="80.0" text="Help" underline="true">
+										<JFXButton fx:id="_helpBtn" onAction="#showHelp" prefHeight="50.0" prefWidth="80.0" text="Help" underline="true">
 											<font>
 												<Font size="14.0" />
 											</font>
@@ -74,8 +64,7 @@
 											</cursor>
 										</JFXButton>
 										<Region HBox.hgrow="ALWAYS" />
-										<HBox fx:id="_infoBar" alignment="CENTER" prefHeight="50.0"
-											prefWidth="650.0" style="-fx-background-color: #4db6ac;">
+										<HBox fx:id="_infoBar" alignment="CENTER" prefHeight="50.0" prefWidth="650.0" style="-fx-background-color: #4db6ac;">
 											<children>
 												<Label text="Score: ">
 													<font>
@@ -102,8 +91,7 @@
 													</font>
 												</Label>
 												<Region HBox.hgrow="ALWAYS" />
-												<JFXButton onAction="#showStatisticsBar"
-													prefHeight="50.0" prefWidth="100.0" text="Details">
+												<JFXButton onAction="#showStatisticsBar" prefHeight="50.0" prefWidth="100.0" text="Details">
 													<font>
 														<Font size="14.0" />
 													</font>
@@ -113,8 +101,7 @@
 												</JFXButton>
 											</children>
 											<effect>
-												<DropShadow blurType="GAUSSIAN" height="25.0"
-													radius="12.0" width="25.0" />
+												<DropShadow blurType="GAUSSIAN" height="25.0" radius="12.0" width="25.0" />
 											</effect>
 											<padding>
 												<Insets left="30.0" />

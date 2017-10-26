@@ -17,12 +17,20 @@
 	-fx-background-color: #757575;
 }
 
-.decrement-arrow {
+.scroll-bar:vertical > .decrement-arrow {
 	-fx-shape: "M 100 300 L 300 300 L 200 100 z";
 }
 
-.increment-arrow {
+.scroll-bar:vertical > .increment-arrow {
 	-fx-shape: "M 100 100 L 300 100 L 200 300 z";
+}
+
+.scroll-bar:horizontal > .decrement-arrow {
+	-fx-shape: "M 300 100 L 300 300 L 100 200 z";
+}
+
+.scroll-bar:horizontal > .increment-arrow {
+	-fx-shape: "M 100 100 L 100 300 L 300 200 z";
 }
 
 .decrement-button:hover, .increment-button:hover {

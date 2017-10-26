@@ -8,16 +8,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Random;
 import java.util.Scanner;
 
-import application.BashProcess;
 import application.Main;
 import enums.Mode;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
+import models.QuestionSet.EmptyQuestionSetException;
 
 /**
  * This class will handle local question list as well as question lists in the
@@ -74,7 +72,7 @@ public class QuestionModel {
 	// TODO I think below _toDoList can be a stack rather than a list, subject to
 	// change later
 	private List<List<String>> _toDoList; // this should be a copy of generated list in the begining of each game but
-									// reduce its size as the game going
+	// reduce its size as the game going
 	private List<List<String>> _questionsDid;
 	private Integer _lengthOfQuestionList;
 	private boolean _isFinished;
@@ -173,7 +171,9 @@ public class QuestionModel {
 	// TODO possibility of combining delete confirmation dialogs? How to handle with
 	// different
 	public void deleteLocalQuestionSet(String setName) {
-		new BashProcess("./MagicStaff.sh", "delete", setName);
+		// new BashProcess("./MagicStaff.sh", "delete", setName);
+		_sets.get(setName).deleteLocalFile();
+		_sets.remove(setName);
 		_listOfSetNames.remove(setName);
 	}
 
@@ -195,30 +195,16 @@ public class QuestionModel {
 		}
 	}
 
+	public boolean checkIfaQuestionExistInSet(String setName, String question) {
+		boolean flag = false;
+		if(isQuestionSetExist(setName) && _sets.get(setName).questionExist(question)) {
+			flag = true;
+		} 
+		return flag;
+	}
 	// delete question from existing question set
 	public void deleteQuestionFromQuestionSet(String setName, String question) {
-		if (!isQuestionSetExist(setName)) {
-			noSetFoundDialog();
-		} else {
-			if (_sets.get(setName).questionExist(question)) {
-				Alert alert = new Alert(AlertType.CONFIRMATION);
-				alert.setTitle("confirm delete");
-				alert.setHeaderText("Look, a Confirmation Dialog");
-				alert.setContentText("Are you ok with this?");
-
-				Optional<ButtonType> result = alert.showAndWait();
-				if (result.get() == ButtonType.OK) {
-					_sets.get(setName).delete(question);
-				}
-			} else {
-				Alert alert = new Alert(AlertType.WARNING);
-				alert.setTitle("Warning Dialog");
-				alert.setHeaderText("No question found");
-				alert.setContentText("Careful with the next step!");
-				alert.showAndWait();
-			}
-
-		}
+		_sets.get(setName).delete(question);
 	}
 
 	// no set found dialog
@@ -329,7 +315,7 @@ public class QuestionModel {
 	// generate a random list of questions from selected question set given number
 	// of questions, this function may or may not be called multiple times for each
 	// run depends on the design choice
-	public void generateQuestionListRandom(String setName) {
+	public void generateQuestionListRandom(String setName) throws EmptyQuestionSetException {
 		if (_lengthOfQuestionList != null && setName.equals("Default")) {
 			generateQuestionListFromPreload("medium", _lengthOfQuestionList);
 		} else if (_lengthOfQuestionList != null) {
@@ -344,6 +330,7 @@ public class QuestionModel {
 		if (_generatedQuestionList == null) {
 			System.err.println("there is no generated question list to start");
 		} else {
+			this.randomizeQuestionListFromUserDefineWithSelfPick(true);
 			_toDoList = _generatedQuestionList;
 		}
 	}

@@ -11,6 +11,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import models.QuestionModel;
+import models.QuestionSet.EmptyQuestionSetException;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -335,7 +336,14 @@ public class SettingsController implements Initializable {
 					_questionModel.generateQuestionListFromPreload("median", numOfQs);
 				} else {
 					_questionModel.setLengthOfQuestionList(numOfQs);
-					_questionModel.generateQuestionListRandom(setName);
+					try {
+						_questionModel.generateQuestionListRandom(setName);
+					} catch (EmptyQuestionSetException e) {
+						Main.showErrorDialog("Empty quesstion set!",
+								"The question set is empty! Cannot generate questions from this question set.", null,
+								background);
+						return;
+					}
 				}
 				pickARandomListBtn.setStyle("-fx-background-color: #424242; -fx-text-fill: #eeeeee;");
 				customizeQListBox.setDisable(true);
@@ -367,6 +375,7 @@ public class SettingsController implements Initializable {
 			Pane root = Main.loadScene("PickQuestionListScene.fxml", pickSceneController);
 			Main.showScene(_userPickingStage, root);
 			pickSceneController.initData(_userPickingStage, setName);
+			pickSceneController.enableShortcut();
 		} catch (NullPointerException e) {
 			permissionDeniededDialog();
 		}

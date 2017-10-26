@@ -42,7 +42,14 @@ public class QuestionSet {
 					// initialize a new questions' list
 					for (String question : listOfQuestions) {
 						String[] entry = question.split(",");
-						_QAPairs.put(entry[0], entry[1]);
+						if (entry.length == 2 && !entry[0].isEmpty() && !entry[1].isEmpty()) {
+							try {
+								Integer.parseInt(entry[1]);
+							} catch (NumberFormatException e) {
+								continue;
+							}
+							_QAPairs.put(entry[0], entry[1]);
+						}
 					}
 				}
 			} catch (IOException e) {
@@ -75,7 +82,10 @@ public class QuestionSet {
 		updateLocalFile();
 	}
 
-	protected List<List<String>> generateRandomQuestionList(int numOfQuestions) {
+	protected List<List<String>> generateRandomQuestionList(int numOfQuestions) throws EmptyQuestionSetException {
+		if (_QAPairs.isEmpty()) {
+			throw new EmptyQuestionSetException(_nameOfSet);
+		}
 		List<List<String>> randomList = new ArrayList<List<String>>();
 		for (int i = 0; i < numOfQuestions; i++) {
 			String question = (String) _QAPairs.keySet().toArray()[new Random()
@@ -95,7 +105,9 @@ public class QuestionSet {
 	}
 
 	protected void deleteLocalFile() {
-		_theSet.delete();
+		if (_theSet != null && _theSet.exists()) {
+			_theSet.delete();
+		}
 	}
 
 	protected boolean questionExist(String key) {
@@ -120,5 +132,24 @@ public class QuestionSet {
 			listForEdit.add(newEntry);
 		}
 		return listForEdit;
+	}
+
+	public class EmptyQuestionSetException extends Exception {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private String _nameOfSet;
+
+		public EmptyQuestionSetException(String nameOfSet) {
+			_nameOfSet = nameOfSet;
+		}
+
+		@Override
+		public String getMessage() {
+			return "The question set " + _nameOfSet + " is empty.";
+		}
+
 	}
 }
