@@ -5,6 +5,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
 
+/**
+ * This class is the controller for help window which contains several dialogs
+ * describe the functionality of the program.
+ *
+ * @author Carl Tang & Wei Chen
+ *
+ */
 public class HelpController {
 
 	@FXML
@@ -37,8 +44,8 @@ public class HelpController {
 		String body = "1. Go to \"Settings\".\n"
 				+ "2. Under \"Recording time and maximum retry number\" block, find \"Maximum number of tries\" setting.\n"
 				+ "3. Enter a number greater than 0 in the text field.\n\n"
-				+ "Note: The maximum number of tries will be automatically saved when you click the 'Home' button if the number \n"
-				+ "is greater than 0.";
+				+ "Note: The maximum number of tries will be automatically saved when you click the 'Home' button if the\n"
+				+ "number is greater than 0.";
 		Main.showInfoDialog(title, body, null, background);
 	}
 

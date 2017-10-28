@@ -37,6 +37,16 @@ import javafx.scene.control.Label;
 
 import javafx.scene.control.ComboBox;
 
+/**
+ * This class is the controller class for setttings scene of the program. This
+ * controller provides functionality of manipulating customized question sets as
+ * well as picking a list of questions to play with from a given question set.
+ * This controller also made a use of local config files to ensure that the
+ * change will retain even the GUI is closed.
+ * 
+ * @author Carl Tang & Wei Chen
+ *
+ */
 public class SettingsController implements Initializable {
 	// background stack pane
 	@FXML
@@ -318,42 +328,47 @@ public class SettingsController implements Initializable {
 	 */
 	@FXML
 	private void pickRandomList(ActionEvent event) {
-		String numOfQuestions = numOfQuestionsTextFieldForRandom.getText();
-		if (numOfQuestions != null && !numOfQuestions.isEmpty() && Integer.parseInt(numOfQuestions) > 0) {
-			// check is auto generate already activated by checking is the customizeQListBox
-			// already disabled
-			if (customizeQListBox.isDisabled()) {
-				// if is activated, deactivate and use preload question list
-				_questionModel.generateQuestionListFromPreload("median", 10);
-				pickARandomListBtn.setStyle("-fx-background-color: white; -fx-text-fill: black;");
-				customizeQListBox.setDisable(false);
-			} else {
-				// if is not activated, activate and ask question model to automatically pick
-				// questions
-				String setName = quesitonSetComboBox.getValue().toString();
-				int numOfQs = Integer.parseInt(numOfQuestions);
-				if (setName.equals(Main.DEFAULT_QUESTION_SET_NAME)) {
-					_questionModel.generateQuestionListFromPreload("median", numOfQs);
+		if (!quesitonSetComboBox.getSelectionModel().isEmpty()) {
+			String numOfQuestions = numOfQuestionsTextFieldForRandom.getText();
+			if (numOfQuestions != null && !numOfQuestions.isEmpty() && Integer.parseInt(numOfQuestions) > 0) {
+				// check is auto generate already activated by checking is the customizeQListBox
+				// already disabled
+				if (customizeQListBox.isDisabled()) {
+					// if is activated, deactivate and use preload question list
+					_questionModel.generateQuestionListFromPreload("median", 10);
+					pickARandomListBtn.setStyle("-fx-background-color: white; -fx-text-fill: black;");
+					customizeQListBox.setDisable(false);
 				} else {
-					_questionModel.setLengthOfQuestionList(numOfQs);
-					try {
-						_questionModel.generateQuestionListRandom(setName);
-					} catch (EmptyQuestionSetException e) {
-						Main.showErrorDialog("Empty quesstion set!",
-								"The question set is empty! Cannot generate questions from this question set.", null,
-								background);
-						return;
+					// if is not activated, activate and ask question model to automatically pick
+					// questions
+					String setName = quesitonSetComboBox.getValue().toString();
+					int numOfQs = Integer.parseInt(numOfQuestions);
+					if (setName.equals(Main.DEFAULT_QUESTION_SET_NAME)) {
+						_questionModel.generateQuestionListFromPreload("median", numOfQs);
+					} else {
+						_questionModel.setLengthOfQuestionList(numOfQs);
+						try {
+							_questionModel.generateQuestionListRandom(setName);
+						} catch (EmptyQuestionSetException e) {
+							Main.showErrorDialog("Empty quesstion set!",
+									"The question set is empty! Cannot generate questions from this question set.",
+									null, background);
+							return;
+						}
 					}
+					pickARandomListBtn.setStyle("-fx-background-color: #424242; -fx-text-fill: #eeeeee;");
+					customizeQListBox.setDisable(true);
 				}
-				pickARandomListBtn.setStyle("-fx-background-color: #424242; -fx-text-fill: #eeeeee;");
-				customizeQListBox.setDisable(true);
-			}
 
-			// TODO underlying code actually support more functionality such as user do not
-			// need to specify numberOfQuestions
+				// TODO underlying code actually support more functionality such as user do not
+				// need to specify numberOfQuestions
+			} else {
+				// show error dialog
+				Main.showErrorDialog("Error!", "The size of the question list can only be a positive interger.", null,
+						background);
+			}
 		} else {
-			// show error dialog
-			Main.showErrorDialog("Error!", "The size of the question list can only be a positive interger.", null,
+			Main.showErrorDialog("Error!", "Please select a question set to generate the question list from.", null,
 					background);
 		}
 	}
@@ -365,21 +380,25 @@ public class SettingsController implements Initializable {
 	 */
 	@FXML
 	private void pickCustomizedList(ActionEvent event) {
-		try {
-			String setName = quesitonSetComboBox.getValue().toString();
-			_userPickingStage = new Stage();
-			_userPickingStage.setMinHeight(400);
-			_userPickingStage.setMinWidth(500);
-			_userPickingStage.setTitle("List picking window");
-			PickQuestionListSceneController pickSceneController = new PickQuestionListSceneController();
-			Pane root = Main.loadScene("PickQuestionListScene.fxml", pickSceneController);
-			Main.showScene(_userPickingStage, root);
-			pickSceneController.initData(_userPickingStage, setName);
-			pickSceneController.enableShortcut();
-		} catch (NullPointerException e) {
-			permissionDeniededDialog();
+		if (!quesitonSetComboBox.getSelectionModel().isEmpty()) {
+			try {
+				String setName = quesitonSetComboBox.getValue().toString();
+				_userPickingStage = new Stage();
+				_userPickingStage.setMinHeight(400);
+				_userPickingStage.setMinWidth(580);
+				_userPickingStage.setTitle("List picking window");
+				PickQuestionListSceneController pickSceneController = new PickQuestionListSceneController();
+				Pane root = Main.loadScene("PickQuestionListScene.fxml", pickSceneController);
+				Main.showScene(_userPickingStage, root);
+				pickSceneController.initData(_userPickingStage, setName);
+				pickSceneController.enableShortcut();
+			} catch (NullPointerException e) {
+				permissionDeniededDialog();
+			}
+		} else {
+			Main.showErrorDialog("Error!", "Please select a question set to generate the question list from.", null,
+					background);
 		}
-
 	}
 
 	/**
@@ -392,6 +411,11 @@ public class SettingsController implements Initializable {
 		_main.showHelp(Function.SETTINGS);
 	}
 
+	/**
+	 * Open the window of editing question set on call.
+	 * 
+	 * @param setName
+	 */
 	private void openeditPanel(String setName) {
 		_editPanelStage = new Stage();
 		_editPanelStage.setMinHeight(400);
@@ -404,6 +428,10 @@ public class SettingsController implements Initializable {
 		editPanelController.initData(setName);
 	}
 
+	/**
+	 * Update displayed list by gathering updated version from the questionModel on
+	 * call
+	 */
 	protected void updateSetList() {
 		ObservableList<String> ol = FXCollections.observableArrayList(_questionModel.getListOfsets());
 		quesitonSetComboBox.setItems(ol);

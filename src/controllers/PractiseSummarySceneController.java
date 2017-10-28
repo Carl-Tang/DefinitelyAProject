@@ -12,7 +12,13 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Label;
-
+/**
+ * This class represents the controller of a scene designed for the practice mode of the program.
+ * Which contains multiple representation of the results of practice as well as a button that allows the user to have a look of numbers they practiced and the correctness by showing a statistics bar on button "Details" clicked.
+ * 
+ * @author Carl Tang & Wei Chen
+ *
+ */
 public class PractiseSummarySceneController {
 
 	@FXML

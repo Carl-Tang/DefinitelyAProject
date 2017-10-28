@@ -21,7 +21,12 @@ import javafx.event.EventHandler;
 import com.jfoenix.controls.JFXListView;
 
 import application.Main;
-
+/**
+ * This class is the controller of a scene such that user can pick their own list of questions to play in the game from a given set of qustions which they can chose in the settings scene.
+ * 
+ * @author Carl Tang & Wei Chen
+ *
+ */
 public class PickQuestionListSceneController {
 
 	@FXML
@@ -59,6 +64,9 @@ public class PickQuestionListSceneController {
 		_isDialogShowing = false;
 	}
 
+	/**
+	 * Load a list of questions from a given set
+	 */
 	protected void loadQuestions() {
 		List<List<String>> rawData = _qm.getQuestionsFromSpecificSet(_setName);
 		for (int i = 0; i < rawData.size(); i++) {
@@ -135,7 +143,11 @@ public class PickQuestionListSceneController {
 				_userChoseListView.getSelectionModel().select(i - 1);
 			}
 			Platform.runLater(() -> {
-				_userChoseListView.requestFocus();
+				if (_userChoseListView.getItems().isEmpty()) {
+					_allQuestionsListView.requestFocus();
+				}else {
+					_userChoseListView.requestFocus();
+				}
 			});
 		}
 	}
@@ -169,11 +181,16 @@ public class PickQuestionListSceneController {
 		}
 	}
 
+	/**
+	 * Show available keyBoard shortcuts
+	 * @param event
+	 */
 	@FXML
 	private void showShortcuts(ActionEvent event) {
-		String body = "Press RIGHT to add the selected question to the list.\n"
-				+ "Press LEFT to remove the selected question from the list.\n"
-				+ "Press ENTER or CTRL+S to confirm use this question list.";
+		String body = "Press					Do\n"
+				    + "RIGHT					add the selected question to the list.\n"
+				    + "LEFT						remove the selected question from the list.\n"
+				    + "ENTER or CTRL+S			confirm use this question list.";
 		Main.showInfoDialog("Shortcuts", body, (e) -> {
 			_isDialogShowing = false;
 		}, _background);

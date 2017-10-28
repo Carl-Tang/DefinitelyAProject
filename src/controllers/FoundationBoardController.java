@@ -34,6 +34,33 @@ import javafx.scene.layout.StackPane;
 import models.QuestionModel;
 import models.UserModel;
 
+/**
+ * This class is a "meta-controller" which act as a bridge that connects the two
+ * models: Question Model and User Model, with several controllers that are
+ * responsible for showing questions, results, feedbacks, and statistics:
+ * PractiseStartPageController, MathStartPageController,
+ * QuestionSceneController, ResultSceneController, StatisticsSidePaneController,
+ * and PractiseSummarySceneController. This controller breaks up the direct
+ * connections between models and these controllers. It together with the
+ * controllers listed above formed a module in which this controller is the
+ * accessing point of the module. The other controllers in the module will be
+ * switching on this foundation board and performing different functions (e.g.
+ * showing questions, showing results, etc.)
+ * <p>
+ * This class recognizes the user's requests that were first filtered and
+ * transformed by the sub-controllers (the controllers listed above), then this
+ * class decides what method in the models should be invoked. For example, to
+ * begin a practice or a math game? To advance to the next question or allow the
+ * user to have another try? To save the result to the User Model or not?
+ * <p>
+ * This class also receives information from the Question Model and transforms
+ * them into the messages/controls to the sub-controllers and controls their
+ * behaviors.
+ * <p>
+ * 
+ * @author Carl Tang & Wei Chen
+ *
+ */
 public class FoundationBoardController implements Initializable {
 
 	// Containers
@@ -268,42 +295,44 @@ public class FoundationBoardController implements Initializable {
 			}
 		};
 		check.setOnSucceeded(rce -> {
-			// ask question model for correctness of the current question
-			boolean isCorrect = _questionModel.isUserCorrect();
+			Platform.runLater(() -> {
+				// ask question model for correctness of the current question
+				boolean isCorrect = _questionModel.isUserCorrect();
 
-			// set the required info of the result controller
-			_resultSceneController.resultIsCorrect(isCorrect);
+				// set the required info of the result controller
+				_resultSceneController.resultIsCorrect(isCorrect);
 
-			// show the user's answer
-			_resultSceneController.setUserAnswer(_questionModel.answerOfUser());
+				// show the user's answer
+				_resultSceneController.setUserAnswer(_questionModel.answerOfUser());
 
-			if (!isCorrect) {
-				// check if the user has a chance to retry
-				_resultSceneController.setCanRetry(_trailNum < _maxTrailNum);
-			} else {
-				_resultSceneController.setCanRetry(false);
-			}
-
-			if (_questionModel.isUserCorrect()) {
-				_resultSceneController.showCorrectAnswer(null);
-			} else {
-				switch (_mode) {
-				case PRACTISE:
-					_resultSceneController.showCorrectAnswer(_questionModel.correctWord());
-					break;
-				case NORMALMATH:
-				case ENDLESSMATH:
-					if (_trailNum == _maxTrailNum) {
-						_resultSceneController.showCorrectAnswer(_questionModel.correctWord());
-					} else {
-						_resultSceneController.showCorrectAnswer(null);
-					}
-					break;
+				if (!isCorrect) {
+					// check if the user has a chance to retry
+					_resultSceneController.setCanRetry(_trailNum < _maxTrailNum);
+				} else {
+					_resultSceneController.setCanRetry(false);
 				}
-			}
 
-			// check is the question the final one
-			_resultSceneController.setFinal(!_questionModel.hasNext());
+				if (_questionModel.isUserCorrect()) {
+					_resultSceneController.showCorrectAnswer(null);
+				} else {
+					switch (_mode) {
+					case PRACTISE:
+						_resultSceneController.showCorrectAnswer(_questionModel.correctWord());
+						break;
+					case NORMALMATH:
+					case ENDLESSMATH:
+						if (_trailNum == _maxTrailNum) {
+							_resultSceneController.showCorrectAnswer(_questionModel.correctWord());
+						} else {
+							_resultSceneController.showCorrectAnswer(null);
+						}
+						break;
+					}
+				}
+
+				// check is the question the final one
+				_resultSceneController.setFinal(!_questionModel.hasNext());
+			});
 
 			// show the result scene
 			_mainPane.getChildren().setAll(_resultScene);
@@ -362,6 +391,7 @@ public class FoundationBoardController implements Initializable {
 			public void handle(ActionEvent event) {
 				// append the result
 				appendResult();
+				_questionModel.NextQA();
 
 				if (_mode == Mode.PRACTISE) {
 					_mode = null;
@@ -421,7 +451,7 @@ public class FoundationBoardController implements Initializable {
 	 */
 	private void appendResult() {
 		// if in practise mode, add this wrong record to the wrong questions map
-		if (_mode == Mode.PRACTISE) {
+		if (_mode == Mode.PRACTISE && !_questionModel.isUserCorrect()) {
 			String currentQuestion = _questionModel.currentQuestion();
 			if (_wrongQuestions.get(currentQuestion) == null) {
 				_wrongQuestions.put(currentQuestion, 1);
@@ -444,6 +474,7 @@ public class FoundationBoardController implements Initializable {
 	 */
 	private void showPractiseSummary() {
 		_mainPane.getChildren().setAll(_practiseSummaryScene);
+		_scoreLabel.setText(_questionModel.getScore() + "");
 		double correctRate = (double) _questionModel.getScore() / _statistics.getNumOfRecords();
 		_practiseSummarySceneController.setCorrectRate(correctRate);
 		_practiseSummarySceneController.setWrongAnswerChartData(_wrongQuestions);
@@ -512,7 +543,7 @@ public class FoundationBoardController implements Initializable {
 	}
 
 	/**
-	 * Show the help information for practise or math questions depending on current
+	 * Show the help information for practice or math questions depending on current
 	 * function of the foundation board
 	 */
 	@FXML

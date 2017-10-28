@@ -11,7 +11,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
-
+/**
+ * This class is the controller of starting page of math mode game in the program.
+ * MathStartPage provides the functionality of taking user's name and choosing the game mode between normal and endless.
+ * 
+ * @author Carl Tang & Wei Chen
+ *
+ */
 public class MathStartPageController implements Initializable {
 
 	@FXML

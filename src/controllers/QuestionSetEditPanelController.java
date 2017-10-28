@@ -22,7 +22,13 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 
 import application.Main;
-
+/**
+ * This class is the controller of QuestionSetEditPanel Scene which is also called set editing page in the program.
+ * This scene provides the functionality of editing a given/created question set. Note: Editing of default list is banned.
+ * 
+ * @author Carl Tang & Wei Chen
+ *
+ */
 public class QuestionSetEditPanelController implements Initializable {
 
 	@FXML
@@ -122,6 +128,10 @@ public class QuestionSetEditPanelController implements Initializable {
 		});
 	}
 
+	/**
+	 * Setting up data and information needed by the class
+	 * @param setName
+	 */
 	protected void initData(String setName) {
 		_questionModel = QuestionModel.getInstance();
 		_currentSetName = setName;
@@ -130,6 +140,9 @@ public class QuestionSetEditPanelController implements Initializable {
 		questionList.getSelectionModel().select(0);
 	}
 
+	/**
+	 *load questions from the given set. 
+	 */
 	protected void loadQuestions() {
 		_listOfQuestions.clear();
 		List<List<String>> rawData = _questionModel.getQuestionsFromSpecificSet(_currentSetName);
@@ -141,6 +154,10 @@ public class QuestionSetEditPanelController implements Initializable {
 		questionList.getItems().setAll(_listOfQuestions);
 	}
 
+	/**
+	 * Add a new question to a given set of questions
+	 * @param event
+	 */
 	@FXML
 	private void addNewQuestion(ActionEvent event) {
 
@@ -156,6 +173,10 @@ public class QuestionSetEditPanelController implements Initializable {
 		loadQuestions();
 	}
 
+	/**
+	 * Close the window on confirmation of all changes are finished, an error dialog will be shown if there is not questions in the questionSet. 
+	 * @param event
+	 */
 	@FXML
 	private void doneCreation(ActionEvent event) {
 		if (_listOfQuestions.isEmpty()) {
@@ -168,7 +189,10 @@ public class QuestionSetEditPanelController implements Initializable {
 			_editPanelStage.close();
 		}
 	}
-
+	/**
+	 * Delete selected question on user request, ask user's confirmation before delete, also pop up warning dialog if nothing is selected and the button is pressed
+	 * @param event
+	 */
 	@FXML
 	private void deleteSelectedQuestion(ActionEvent event) {
 		String selectedQ = questionList.getSelectionModel().getSelectedItem();
@@ -201,10 +225,16 @@ public class QuestionSetEditPanelController implements Initializable {
 		}
 	}
 
+	/**
+	 * Provides shortcut tips onAction
+	 * @param event
+	 */
 	@FXML
 	private void showShortcuts(ActionEvent event) {
-		String body = "Press CTRL+N to add a new question.\n" + "Press DELETE to delete the selected question.\n"
-				+ "Press ENTER or CTRL+S to finish editing and close this window.";
+		String body = "Press					Do\n"
+			    + "CTRL+N					add a new question.\n"
+				+ "DELETE					delete the selected question.\n"
+			    + "ENTER or CTRL+S			finish editing and close this window.\n";
 		Main.showInfoDialog("Shortcuts", body, (e) -> {
 			_isDialogShowing = false;
 		}, background);

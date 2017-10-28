@@ -15,7 +15,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import models.QuestionModel;
-
+/**
+ * This class is the controller for Result scene which shows the user correctness of the question he/she just answered with the functionality of:
+ * offering a retry for the 1st time wrong answer, skip, go next question, information of what the user answered, detail of past questions, provide user to hear what they've said as well as hint of the correct word if they answered wrong the 2nd time.
+ * 
+ * @author Carl Tang & Wei Chen
+ *
+ */
 public class ResultSceneController {
 
 	// Labels

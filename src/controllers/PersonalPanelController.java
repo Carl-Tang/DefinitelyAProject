@@ -11,7 +11,14 @@ import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Label;
 import models.UserModel;
-
+/**
+ * This class is the controller for PersonalPanelScene which is also called Personal DashBoard in the program.
+ * Personal DashBoard is connected with, and directed from Leader Board of the program, 
+ * it shows to the user a detailed analysis and statistics of the game record history of a specific user in the game.
+ * 
+ * @author Carl Tang & Wei Chen
+ *
+ */
 public class PersonalPanelController {
 
 	// Labels
