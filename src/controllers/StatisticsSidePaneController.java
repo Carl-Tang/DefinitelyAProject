@@ -5,7 +5,12 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.paint.Color;
-
+/**
+ * This class is the controller of a statistics side pane which is mainly a list view that is used to show information of past questions user did in case of gaming and practing of the program,
+ * 
+ * @author Carl Tang & Wei Chen
+ *
+ */
 public class StatisticsSidePaneController {
 
 	@FXML

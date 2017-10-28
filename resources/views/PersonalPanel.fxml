@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" >
+<VBox alignment="CENTER" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
       <StackPane>
          <children>
@@ -30,7 +30,7 @@
       				</JFXButton>
       				<Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
       				<Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-      				<JFXButton minWidth="150.0" onAction="#showLeaderBoard" prefHeight="50.0" text="Go To LeaderBoard" textFill="WHITE">
+      				<JFXButton minWidth="150.0" onAction="#showLeaderBoard" prefHeight="50.0" text="Go To Leaderboard" textFill="WHITE">
       					<font>
       						<Font name="System Bold" size="14.0" />
       					</font>

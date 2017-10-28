@@ -11,7 +11,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
-
+/**
+ * This class is the controller of starting page of practice in the program.
+ * PractiseStartPage provides the functionality of taking user's name and choosing the game mode between keeping practice pronunciation a given number or randomly practice numbers vary from 1 to 99.
+ * 
+ * @author Carl Tang & Wei Chen
+ *
+ */
 public class PractiseStartPageController implements Initializable {
 
 	@FXML

@@ -18,7 +18,12 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 
 import javafx.scene.control.Label;
-
+/**
+ * This class is the controller for the Question scene which shows the user current question and taking user's response.
+ * 
+ * @author Carl Tang & Wei Chen
+ *
+ */
 public class QuestionSceneController {
 	@FXML
 	private Label _question;

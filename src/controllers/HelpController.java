@@ -5,6 +5,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
 
+/**
+ * This class is the controller for help window which contains several dialogs
+ * describe the functionality of the program.
+ *
+ * @author Carl Tang & Wei Chen
+ *
+ */
 public class HelpController {
 
 	@FXML
@@ -21,7 +28,7 @@ public class HelpController {
 		String title = "What is an Endless Mode Math Game?";
 		String body = "In an Endless Mode Math Game, you will be answering math questions \n"
 				+ "randomly picked from the default question set*. The game will not finish \n"
-				+ "untill you clicked the 'Skip the rest and finish' button.\n\n" + "* See \"What is a question set?\"";
+				+ "until you clicked the 'Skip the rest and finish' button.\n\n" + "* See \"What is a question set?\"";
 		Main.showInfoDialog(title, body, null, background);
 	}
 
@@ -37,8 +44,8 @@ public class HelpController {
 		String body = "1. Go to \"Settings\".\n"
 				+ "2. Under \"Recording time and maximum retry number\" block, find \"Maximum number of tries\" setting.\n"
 				+ "3. Enter a number greater than 0 in the text field.\n\n"
-				+ "Note: The maximum number of tries will be automatically saved when you click the 'Home' button if the number \n"
-				+ "is greater than 0.";
+				+ "Note: The maximum number of tries will be automatically saved when you click the 'Home' button if the\n"
+				+ "number is greater than 0.";
 		Main.showInfoDialog(title, body, null, background);
 	}
 
@@ -111,10 +118,10 @@ public class HelpController {
 				+ "  of the system by clicking the 'Auto Generate' button again. \n\n"
 				+ "- To pick your own question list, go to \"Settings\", also first select a question set, and \n"
 				+ "  click the 'Pick yourself' button in \"Customize question list\" setting. A new window will \n"
-				+ "  be opened for you to pick questions from the selected question set. Click the '>>' button to \n"
-				+ "  add a question to the question list, or click the '<<' button to remove a question from the \n"
-				+ "  question list. After finished editing the question list, click the 'Confirm' button and the \n"
-				+ "  question list will be saved to the system. \n\n"
+				+ "  be opened for you to pick questions from the selected question set. Click the '>>' button or \n"
+				+ "  press RIGHT to add a question to the question list, or click the '<<' button or press LEFT to\n"
+				+ "  remove a question from the question list. After finished editing the question list, click the\n"
+				+ "  'Confirm' button or press ENTER or press CTRL+S and the question list will be saved to the system. \n\n"
 				+ "Note: the customized question list will not be saved locally, therefore if you want to \n"
 				+ "customize your own question list, you need to pick your own question list every time you \n"
 				+ "close and restart the program.";
@@ -133,7 +140,7 @@ public class HelpController {
 				+ "\"What is a question list?\" for help) or be randomly chosen to be asked in math games. \n"
 				+ "The default question set is \"" + Main.DEFAULT_QUESTION_SET_NAME
 				+ "\", this set contains 300 math questions of different \n"
-				+ "hardnesses and is not editable/deletable.\n"
+				+ "hardness and is not editable/deletable.\n"
 				+ "Apart from the default question set, you can edit/add/delete your own question sets*.\n\n"
 				+ "* See \"How to edit/add/delete your own question sets?\" for more details.";
 		Main.showInfoDialog(title, body, null, background);
@@ -175,13 +182,13 @@ public class HelpController {
 		String body = "To add/delete questions in a question set, you need to open the questioon set in a \"Set\n"
 				+ "editing page\" window. For how to open this window, please have a look at \"How to\n"
 				+ "edit/add/delete your own question sets?\". In this window, you can do the following:\n\n"
-				+ "- To add a question to the question set, click 'Add' button and enter the math expression \n"
-				+ "  in the left text field on the dialog poped up. The answer for the question will be \n"
-				+ "  automatically calculated and shown in the right text field. Then click 'Add' or press Enter\n"
-				+ "  key to add the question to the question set. Press Esc key to close the dialog.\n\n"
-				+ "- To delete a question from the question set, select the question and click delete or press\n"
-				+ "  Delete key to delete the selected question.\n\n"
-				+ "- Finally, click the 'Done' button or press Enter key to finish editing this question set.\n\n"
+				+ "- To add a question to the question set, pressed CTRL+N or click 'Add' button and enter the \n"
+				+ "  math expression in the left text field on the dialog poped up. The answer for the question \n"
+				+ "  will be automatically calculated and shown in the right text field. Then click 'Add' or press\n"
+				+ "  ENTER to add the question to the question set. Press ESC to close the dialog.\n\n"
+				+ "- To delete a question from the question set, select the question and click 'Delete' or press\n"
+				+ "  DELETE to delete the selected question.\n\n"
+				+ "- Finally, click the 'Done' button or press ENTER or press CTRL+S to finish editing this question set.\n\n"
 				+ "Note: the addition and deletion of questions will take effect immediately and is automatically\n"
 				+ "saved. Either clicking or not clicking the 'Done' button will have no control on the change\n"
 				+ "of the question set. Be careful when adding and deleting questions.";
@@ -224,7 +231,7 @@ public class HelpController {
 				+ "- For Endless Mode Math Games**, the average hardness factor is calculated using the same procedure\n"
 				+ "  as Normal Mode Math Games. The factor is then timed by the number of questions you have got correct\n"
 				+ "  (e.g. if you have done 4 questions and got 3 of them correct, the factor will be timed by 3). Then\n"
-				+ "  the calculated number will be timed by 10 and this will be your currect score in the game.\n\n"
+				+ "  the calculated number will be timed by 10 and this will be your current score in the game.\n\n"
 				+ "* See \"What is a Normal Mode Math Game?\"\n" + "** See \"What is an Endless Mode Math Game?\"";
 		Main.showInfoDialog(title, body, null, background);
 	}

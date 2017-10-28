@@ -12,7 +12,12 @@ import java.util.ResourceBundle;
 import application.Main;
 import enums.Function;
 import javafx.event.ActionEvent;
-
+/**
+ * This is the controller class for homepage. It simply containss a few button that can take user to different functions of the program such as settings horld math game or score pane.
+ * 
+ * @author Carl Tang & Wei Chen
+ *
+ */
 public class HomeController implements Initializable {
 	// buttons
 	@FXML
@@ -44,6 +49,9 @@ public class HomeController implements Initializable {
 		_main = main;
 	}
 
+	/**
+	 * Initialize buttons of the scene: setting icons for the buttons
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// set the icons in the buttons

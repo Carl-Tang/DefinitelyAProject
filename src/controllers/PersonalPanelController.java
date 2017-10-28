@@ -11,7 +11,14 @@ import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Label;
 import models.UserModel;
-
+/**
+ * This class is the controller for PersonalPanelScene which is also called Personal DashBoard in the program.
+ * Personal DashBoard is connected with, and directed from Leader Board of the program, 
+ * it shows to the user a detailed analysis and statistics of the game record history of a specific user in the game.
+ * 
+ * @author Carl Tang & Wei Chen
+ *
+ */
 public class PersonalPanelController {
 
 	// Labels
@@ -68,7 +75,7 @@ public class PersonalPanelController {
 		int[] history = model.getPersonalHistory(Mode.NORMALMATH, userName);
 		XYChart.Series<String, Number> series = new Series<String, Number>();
 		for (int i = 0; i < history.length; i++) {
-			series.getData().add(new Data<String, Number>("" + i, history[i]));
+			series.getData().add(new Data<String, Number>("" + (i + 1), history[i]));
 		}
 		_normalModeChart.getData().add(series);
 
@@ -80,7 +87,7 @@ public class PersonalPanelController {
 		history = model.getPersonalHistory(Mode.ENDLESSMATH, userName);
 		series = new Series<String, Number>();
 		for (int i = 0; i < history.length; i++) {
-			series.getData().add(new Data<String, Number>("" + i, history[i]));
+			series.getData().add(new Data<String, Number>("" + (i + 1), history[i]));
 		}
 		_endlessModeChart.getData().add(series);
 

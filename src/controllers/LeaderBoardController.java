@@ -18,7 +18,13 @@ import javafx.fxml.Initializable;
 import models.UserDataTuple;
 import models.UserModel;
 import models.UserRankListViewCell;
-
+/**
+ * This is the controller for leader board which is the main score scene, it connects to personal panel scene.
+ * LeaderBoard scene shows the rank of players with their name and a filter which provides the functionality of narrow the searching range of leader board, this can help the user locate him/herself fastly.
+ * 
+ * @author Carl Tang & Wei Chen
+ *
+ */
 public class LeaderBoardController implements Initializable {
 
 	@FXML

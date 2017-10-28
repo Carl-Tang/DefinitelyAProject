@@ -10,9 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity"
-	style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.111"
-	xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
 		<Label text="Answer Math Questions In Maori">
 			<font>
@@ -30,24 +28,19 @@
 						<Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
 					</HBox.margin>
 					<children>
-						<Label fx:id="_tipMessage" opacity="0.8"
-							text="The name can only contain letters, numbers, or underscores">
+						<Label fx:id="_tipMessage" opacity="0.8" text="The name can only contain letters, numbers, or underscores">
 							<VBox.margin>
 								<Insets left="2.0" />
 							</VBox.margin>
 						</Label>
-						<TextField fx:id="_userNameTF" prefHeight="40.0"
-							prefWidth="400.0" promptText="Please enter your name" />
+						<TextField fx:id="_userNameTF" prefHeight="40.0" prefWidth="400.0" promptText="Please enter your name" />
 					</children>
 				</VBox>
 			</children>
 		</HBox>
-		<HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
-			minHeight="-Infinity" minWidth="-Infinity">
+		<HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
 			<children>
-				<JFXButton fx:id="_normalModeButton" buttonType="RAISED"
-					minWidth="170.0" onAction="#normalModeButtonClicked" prefHeight="35.0"
-					style="-fx-background-color: #1976d2;" text="Normal Mode" textFill="WHITE">
+				<JFXButton fx:id="_normalModeButton" buttonType="RAISED" minWidth="170.0" onAction="#normalModeButtonClicked" prefHeight="35.0" style="-fx-background-color: #1976d2;" text="Normal Mode" textFill="WHITE">
 					<HBox.margin>
 						<Insets left="10.0" right="10.0" />
 					</HBox.margin>
@@ -58,10 +51,7 @@
 						<Font name="System Bold" size="14.0" />
 					</font>
 				</JFXButton>
-				<JFXButton fx:id="_endlessModeButton" buttonType="RAISED"
-					minWidth="170.0" onAction="#endlessModeButtonClicked" prefHeight="35.0"
-					style="-fx-background-color: #1976d2;" text="Endelss Mode"
-					textFill="WHITE">
+				<JFXButton fx:id="_endlessModeButton" buttonType="RAISED" minWidth="170.0" onAction="#endlessModeButtonClicked" prefHeight="35.0" style="-fx-background-color: #1976d2;" text="Endelss Mode" textFill="WHITE">
 					<cursor>
 						<Cursor fx:constant="HAND" />
 					</cursor>
@@ -76,7 +66,9 @@
 		</HBox>
 	</children>
 	<effect>
-		<DropShadow blurType="GAUSSIAN" color="#00000080" height="50.0"
-			radius="24.5" width="50.0" />
+		<DropShadow blurType="GAUSSIAN" color="#00000080" height="50.0" radius="24.5" width="50.0" />
 	</effect>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
 </VBox>
